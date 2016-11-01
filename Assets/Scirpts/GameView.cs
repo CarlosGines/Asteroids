@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 
@@ -12,8 +13,10 @@ namespace CgfGames
 		#region Constants
 		//======================================================================
 
-		private const float NEW_LEVEL_TIME = 5f;
+		private const float NEW_LEVEL_TIME = 2f;
 		private const float RESPAWN_SHIP_TIME = 2f;
+		private const float SPAWN_SAUCER_MIN_TIME = 3f;
+		private const float SPAWN_SAUCER_MAX_TIME = 30f;
 
 		#endregion
 
@@ -55,7 +58,11 @@ namespace CgfGames
 
 		private IEnumerator WaitAndSpawnSaucer2 (Action spawnSacucer)
 		{
-			yield return new WaitForSeconds (3 + Random.value * 27);
+			yield return new WaitForSeconds (
+				SPAWN_SAUCER_MIN_TIME + Random.value * (
+					SPAWN_SAUCER_MAX_TIME - SPAWN_SAUCER_MIN_TIME
+				)
+			);
 			spawnSacucer ();
 		}
 
@@ -92,7 +99,14 @@ namespace CgfGames
 
 		public void GameOver ()
 		{
+			StartCoroutine (this.GameOver2 ());
+		}
+
+		private IEnumerator GameOver2 ()
+		{
 			mainText.enabled = true;
+			yield return new WaitForSeconds (3f);
+			SceneManager.LoadScene (0);
 		}
 
 		#endregion

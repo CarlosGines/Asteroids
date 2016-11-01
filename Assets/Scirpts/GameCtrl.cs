@@ -64,8 +64,7 @@ namespace CgfGames
 
 		public void StartGame ()
 		{
-//			this.StartLevel ();
-			this.SpawnSaucer (SaucerCtrl.SMALL_SAUCER_SIZE);
+			this.StartLevel ();
 			view.UpdateScore (0, _gameState.Score);
 			view.UpdateLives (0, _gameState.Lives);
 		}
@@ -121,12 +120,19 @@ namespace CgfGames
 
 		private void ShipDestroyed ()
 		{
+			this.view.CancelSpawnSaucer ();
 			if (_gameState.Lives == 0) {
 				this.GameOver ();
 			} else {
 				_gameState.Lives--;
-				this.view.WaitToRespawnShip (shipCtrl.Respawn);
+				this.view.WaitToRespawnShip (this.RespawnShip);
 			}
+		}
+
+		private void RespawnShip ()
+		{
+			shipCtrl.Respawn ();
+			this.view.WaitToSpawnSaucer(this.SpawnSaucer);
 		}
 
 		private void AsteroidDestroyed (AsteroidCtrl asteroidCtrl,
@@ -156,9 +162,9 @@ namespace CgfGames
 				);
 			int size;
 			if (Random.value < smallSaucerChance) {
-				size = SaucerCtrl.SMALL_SAUCER_SIZE;
+				size = SaucerCtrl.SMALL_SAUCER;
 			} else {
-				size = SaucerCtrl.BIG_SAUCER_SIZE;
+				size = SaucerCtrl.BIG_SAUCER;
 			}
 			return size;
 		}

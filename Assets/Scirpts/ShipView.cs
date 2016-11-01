@@ -61,8 +61,7 @@ namespace CgfGames
 		void OnTriggerEnter2D (Collider2D other)
 		{
 			if (other.CompareTag ("Asteroid") || other.CompareTag ("Saucer") 
-//					|| other.CompareTag ("SaucerShot")
-			) {
+					|| other.CompareTag ("SaucerShot")) {
 				if (this.HitEvent != null) {
 					this.HitEvent ();
 				}
