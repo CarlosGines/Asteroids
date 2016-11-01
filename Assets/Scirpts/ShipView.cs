@@ -11,6 +11,7 @@ namespace CgfGames
 		//======================================================================
 
 		private const float TELEPORT_TIME = 2f;
+		private const string SHIP_SHOT_TAG = "ShipShot";
 
 		#endregion
 
@@ -85,7 +86,10 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			this.shotPool.Get (trans.position, trans.rotation);
+			GameObject shotGobj = this.shotPool.Get (
+				trans.position, trans.rotation
+			);
+			shotGobj.tag = SHIP_SHOT_TAG;
 		}
 
 		public void Teleport (Action teleportDone)

@@ -36,7 +36,7 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 
-		public GameObject shotPrefab;
+		public ObjectPool shotPool;
 
 		#endregion
 
@@ -112,12 +112,10 @@ namespace CgfGames
 
 		public void Fire (float angle)
 		{
-			GameObject shotGo = Instantiate (
-				shotPrefab, 
-				trans.position,
-				Quaternion.Euler (0, 0, angle)
-			) as GameObject;
-			shotGo.tag = SAUCER_SHOT_TAG;
+			GameObject shotGobj = this.shotPool.Get (
+				trans.position, Quaternion.Euler (0, 0, angle)
+			);
+			shotGobj.tag = SAUCER_SHOT_TAG;
 		}
 
 		public void ShipDestroyed ()

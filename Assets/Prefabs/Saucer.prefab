@@ -22,7 +22,6 @@ GameObject:
   - 212: {fileID: 212000013775845140}
   - 50: {fileID: 50000013668552654}
   - 61: {fileID: 61000010526358524}
-  - 114: {fileID: 114000013557675276}
   - 114: {fileID: 114000010358406686}
   - 114: {fileID: 114000011899485028}
   m_Layer: 0
@@ -31,7 +30,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4000011278158070
 Transform:
   m_ObjectHideFlags: 1
@@ -88,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  shotPrefab: {fileID: 1000014099307368, guid: ef10c47962b1a4416923ee4fba367e29, type: 2}
+  shotPool: {fileID: 0}
 --- !u!114 &114000011899485028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,23 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d842086b68b4fcfbabdbbc2964f24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114000013557675276
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011961011870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 982754c2254ac4ac1a5201bba5e20c95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  view: {fileID: 114000010358406686}
-  _gameState:
-    _score: 0
-    _lives: 0
-    _level: 0
-  <Size>k__BackingField: 0
 --- !u!212 &212000013775845140
 SpriteRenderer:
   m_ObjectHideFlags: 1

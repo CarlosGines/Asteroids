@@ -69,7 +69,7 @@ namespace CgfGames
 		public void Init (int size, Vector3 pos, Vector3 dir, ObjectPool asteroidPool)
 		{
 			this.trans.position = pos;
-			this.trans.localScale = Vector3.one * (int) (Math.Pow (2, size));
+			this.trans.localScale = Vector3.one * 1.6f * (int) (Math.Pow (2, size));
 			this.translation = dir;
 			this.translation.z = 0;
 			this.translation = this.translation.normalized;

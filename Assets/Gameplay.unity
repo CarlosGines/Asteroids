@@ -423,10 +423,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 1000011961011870, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 114000010358406686, guid: bfa6425658dff4e3394cc34467ed6c55,
+        type: 2}
+      propertyPath: shotPool
+      value: 
+      objectReference: {fileID: 379004335}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
   m_IsPrefabParent: 0
