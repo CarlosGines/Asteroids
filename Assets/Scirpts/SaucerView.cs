@@ -13,6 +13,7 @@ namespace CgfGames
 
 		private const string SAUCER_SHOT_TAG = "SaucerShot";
 		private const float LEAVE_TIME = 1f;
+		private static readonly Vector3 SMALL_SCALE = new Vector3 (3.6f, 2.6f, 1);
 
 		#endregion
 
@@ -91,7 +92,7 @@ namespace CgfGames
 		public void Init (int size, float speed)
 		{
 			this.trans.position = SpaceObjectMngr.LateralRandomPos ();
-			this.trans.localScale *= size * 1.6f + 1;
+			this.trans.localScale = SMALL_SCALE * (size * 1.6f + 1);
 			_sense = this.trans.position.x > 0 ? -1 : 1;
 			this.speed = speed;
 			StartCoroutine (this.SetRandomDirection ());
@@ -132,7 +133,7 @@ namespace CgfGames
 
 		public void Destroyed ()
 		{
-			Destroy (gameObject);
+			gameObject.SetActive (false);
 		}
 
 		#endregion
@@ -150,7 +151,7 @@ namespace CgfGames
 
 		private void Leave ()
 		{
-			Destroy (gameObject);
+			gameObject.SetActive (false);
 			if (this.GoneEvent != null) {
 				this.GoneEvent ();
 			}

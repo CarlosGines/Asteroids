@@ -85,8 +85,10 @@ namespace CgfGames
 
 		public void SpawnSaucer (int size)
 		{
-			_saucerCtrl = _view.SpawnSaucer ();
-			_saucerCtrl.Init (_gameState, _shipCtrl, size);
+			SaucerView saucerView = _view.SpawnSaucer (size);
+			_saucerCtrl = new SaucerCtrl (
+				_gameState, saucerView, _shipCtrl, size
+			);
 			_saucerCtrl.DestroyedEvent += SaucerDestroyed;
 			_saucerCtrl.GoneEvent += SaucerGone;
 		}

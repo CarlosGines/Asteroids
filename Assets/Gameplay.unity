@@ -342,11 +342,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4000010081101846, guid: 16ca49477a29648458e237807c3387a4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.49
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000010081101846, guid: 16ca49477a29648458e237807c3387a4, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.52
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000010081101846, guid: 16ca49477a29648458e237807c3387a4, type: 2}
       propertyPath: m_LocalPosition.z
@@ -384,6 +384,58 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16ca49477a29648458e237807c3387a4, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &1099310103
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011278158070, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011961011870, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: bfa6425658dff4e3394cc34467ed6c55, type: 2}
+  m_IsPrefabParent: 0
+--- !u!114 &1099310104 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000010358406686, guid: bfa6425658dff4e3394cc34467ed6c55,
+    type: 2}
+  m_PrefabInternal: {fileID: 1099310103}
+  m_Script: {fileID: 11500000, guid: bfee81e3cb7d648d78ad956dba7938a9, type: 3}
 --- !u!1 &1116382436
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,9 +676,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipPrefab: {fileID: 1000012609841232, guid: 16ca49477a29648458e237807c3387a4, type: 2}
-  saucerPrefab: {fileID: 1000011961011870, guid: bfa6425658dff4e3394cc34467ed6c55,
-    type: 2}
   asteroidsPool: {fileID: 1723576219}
+  saucerView: {fileID: 1099310104}
   mainText: {fileID: 1319901227}
   scoreText: {fileID: 889076233}
   livesText: {fileID: 2071630769}

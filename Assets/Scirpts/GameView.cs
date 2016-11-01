@@ -24,8 +24,8 @@ namespace CgfGames
 		//======================================================================
 
 		public GameObject shipPrefab;
-		public GameObject saucerPrefab;
 		public ObjectPool asteroidsPool;
+		public SaucerView saucerView;
 		public Text mainText;
 		public Text scoreText;
 		public Text livesText;
@@ -84,9 +84,11 @@ namespace CgfGames
 			StopCoroutine ("WaitAndSpawnSaucer2");
 		}
 
-		public SaucerCtrl SpawnSaucer ()
+		public SaucerView SpawnSaucer (int size)
 		{				
-			return Instantiate (saucerPrefab).GetComponent<SaucerCtrl> ();
+			this.saucerView.gameObject.SetActive (true);
+			this.saucerView.Init (size, SaucerCtrl.SPEED [size]);
+			return this.saucerView;
 		}
 
 		public void LevelFinished (Action onComplete)
