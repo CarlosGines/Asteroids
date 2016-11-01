@@ -21,11 +21,17 @@ namespace CgfGames
 
 		#endregion
 
+		#region Public fields
+		//======================================================================
+
+		public GameState GameState { get; private set; }
+
+		#endregion
+
 		#region Private fields
 		//======================================================================
 
-		private GameView _view;
-		private GameState _gameState;
+		private IGameView _view;
 		private ShipCtrl _shipCtrl;
 		private SaucerCtrl _saucerCtrl;
 		private List<AsteroidCtrl> _asteroidCtrlList;
@@ -35,14 +41,14 @@ namespace CgfGames
 		#region Init
 		//======================================================================
 
-		public GameCtrl (GameView view, ShipCtrl shipCtrl)
+		public GameCtrl (IGameView view, ShipCtrl shipCtrl)
 		{
 			_view = view;
-			_gameState = new GameState (0, INIT_LIVES, 0);
+			this.GameState = new GameState (0, INIT_LIVES, 0);
 			_shipCtrl = shipCtrl;
 			_asteroidCtrlList = new List<AsteroidCtrl> ();
-			_gameState.ScoreUpdatedEvent += this.ScoreUpdated;
-			_gameState.LivesUpdatedEvent += _view.UpdateLives;
+			this.GameState.ScoreUpdatedEvent += this.ScoreUpdated;
+			this.GameState.LivesUpdatedEvent += _view.UpdateLives;
 			_shipCtrl.DestroyedEvent += ShipDestroyed;
 		}
 
@@ -54,15 +60,15 @@ namespace CgfGames
 		public void StartGame ()
 		{
 			this.StartLevel ();
-			_view.UpdateScore (0, _gameState.Score);
-			_view.UpdateLives (0, _gameState.Lives);
+			_view.UpdateScore (0, this.GameState.Score);
+			_view.UpdateLives (0, this.GameState.Lives);
 		}
 
 
 		public void StartLevel ()
 		{
-			_gameState.Level++;
-			for (int i = 0; i < _gameState.Level + 3 ; i++) {
+			this.GameState.Level++;
+			for (int i = 0; i < this.GameState.Level + 3 ; i++) {
 				this.SpawnAsteroid ();
 			}
 			_view.WaitToSpawnSaucer(this.SpawnSaucer);
@@ -87,7 +93,7 @@ namespace CgfGames
 		{
 			SaucerView saucerView = _view.SpawnSaucer (size);
 			_saucerCtrl = new SaucerCtrl (
-				_gameState, saucerView, _shipCtrl, size
+				this.GameState, saucerView, _shipCtrl, size
 			);
 			_saucerCtrl.DestroyedEvent += SaucerDestroyed;
 			_saucerCtrl.GoneEvent += SaucerGone;
@@ -106,7 +112,7 @@ namespace CgfGames
 		private void ScoreUpdated (int oldScore, int score)
 		{
 			if (oldScore / 10000 < score / 10000) {
-				_gameState.Lives++;
+				this.GameState.Lives++;
 			}
 			_view.UpdateScore (oldScore, score);
 		}
@@ -114,10 +120,10 @@ namespace CgfGames
 		private void ShipDestroyed ()
 		{
 			_view.CancelSpawnSaucer ();
-			if (_gameState.Lives == 0) {
+			if (this.GameState.Lives == 0) {
 				this.GameOver ();
 			} else {
-				_gameState.Lives--;
+				this.GameState.Lives--;
 				_view.WaitToRespawnShip (this.RespawnShip);
 			}
 		}
@@ -131,7 +137,7 @@ namespace CgfGames
 		private void AsteroidDestroyed (AsteroidCtrl asteroidCtrl,
 				List<AsteroidCtrl> childAsteroidCtrls)
 		{
-			_gameState.Score += ASTEROIDS_POINTS[asteroidCtrl.Size];
+			this.GameState.Score += ASTEROIDS_POINTS[asteroidCtrl.Size];
 			if (childAsteroidCtrls != null) {
 				_asteroidCtrlList.AddRange (childAsteroidCtrls);
 				foreach (AsteroidCtrl ac in childAsteroidCtrls) {
@@ -150,7 +156,7 @@ namespace CgfGames
 		{
 			float smallSaucerChance = INIT_SMALL_SAUCER_CHANCE + 
 				(
-					1f * _gameState.Score / ONLY_SMALL_SAUCER_POINTS * 
+					1f * this.GameState.Score / ONLY_SMALL_SAUCER_POINTS * 
 					(1 - INIT_SMALL_SAUCER_CHANCE)
 				);
 			int size;
@@ -164,7 +170,7 @@ namespace CgfGames
 
 		private void SaucerDestroyed (SaucerCtrl saucerCtrl)
 		{
-			_gameState.Score += SAUCERS_POINTS [saucerCtrl.Size];
+			this.GameState.Score += SAUCERS_POINTS [saucerCtrl.Size];
 			_saucerCtrl = null;
 			_view.WaitToSpawnSaucer(this.SpawnSaucer);
 			this.CheckLevelFinished ();

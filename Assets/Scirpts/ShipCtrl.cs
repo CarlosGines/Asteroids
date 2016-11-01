@@ -8,7 +8,8 @@ namespace CgfGames
 		#region Public fields
 		//======================================================================
 
-		public bool Active { get; private set; }
+		public bool IsActive { get; private set; }
+		public bool IsAlive { get; private set; }
 		public Vector2 Pos { get { return _view.Pos; } }
 
 		#endregion
@@ -23,17 +24,18 @@ namespace CgfGames
 		#region Private fields
 		//======================================================================
 	
-		private ShipView _view;
+		private IShipView _view;
 
 		#endregion
 
 		#region Init
 		//======================================================================
 
-		public ShipCtrl (ShipView view)
+		public ShipCtrl (IShipView view)
 		{
 			_view = view;
-			this.Active = true;
+			this.IsAlive = true;
+			this.IsActive = true;
 			_view.HitEvent += this.Destroyed;
 		}
 
@@ -44,41 +46,42 @@ namespace CgfGames
 
 		public void Rotate (float direction)
 		{
-			if (this.Active) {
+			if (this.IsActive) {
 				this._view.Rotate (direction);
 			}
 		}
 
 		public void Thrust ()
 		{
-			if (this.Active) {
+			if (this.IsActive) {
 				_view.Thrust ();
 			}
 		}
 
 		public void Fire ()
 		{
-			if (this.Active) {
+			if (this.IsActive) {
 				_view.Fire ();
 			}
 		}
 
 		public void Teleport ()
 		{
-			if (this.Active) {
-				this.Active = false;
+			if (this.IsActive) {
+				this.IsActive = false;
 				_view.Teleport (TeleportDone);
 			}
 		}
 
 		private void TeleportDone ()
 		{
-			this.Active = true;
+			this.IsActive = true;
 		}
 
 		public void Destroyed ()
 		{
-			this.Active = false;
+			this.IsAlive = false;
+			this.IsActive = false;
 			_view.Destroyed ();
 			if (this.DestroyedEvent != null) {
 				this.DestroyedEvent ();
@@ -87,8 +90,11 @@ namespace CgfGames
 
 		public void Respawn ()
 		{
-			this.Active = true;
-			_view.Respawn ();
+			if (!this.IsAlive) {
+				this.IsAlive = true;
+				this.IsActive = true;
+				_view.Respawn ();
+			}
 		}
 
 		#endregion

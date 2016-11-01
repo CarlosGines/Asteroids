@@ -4,8 +4,27 @@ using System.Collections;
 
 namespace CgfGames
 {
+	public interface IShipView
+	{
+		Vector2 Pos { get; }
+
+		event Action HitEvent;
+
+		void Rotate (float direction);
+
+		void Thrust ();
+
+		void Fire ();
+
+		void Teleport (Action teleportDone);
+
+		void Destroyed ();
+
+		void Respawn ();
+	}
+
 	[RequireComponent (typeof (SpaceObjectMngr))]
-	public class ShipView : MonoBehaviour
+	public class ShipView : MonoBehaviour, IShipView
 	{
 		#region Constants
 		//======================================================================
@@ -71,7 +90,7 @@ namespace CgfGames
 
 		#endregion
 
-		#region Public methods
+		#region IShipView implementation
 		//======================================================================
 
 		public void Rotate (float direction)

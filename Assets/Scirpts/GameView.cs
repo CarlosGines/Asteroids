@@ -8,7 +8,28 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	public class GameView : MonoBehaviour
+	public interface IGameView
+	{
+		void WaitToRespawnShip (Action respawn);
+	
+		AsteroidView SpawnAsteroid ();
+
+		void WaitToSpawnSaucer (Action spawnSacucer);
+
+		SaucerView SpawnSaucer (int size);
+
+		void CancelSpawnSaucer ();
+
+		void LevelFinished (Action onComplete);
+
+		void UpdateScore (int oldScore, int score);
+
+		void UpdateLives (int oldLives, int lives);
+
+		void GameOver ();
+	}
+
+	public class GameView : MonoBehaviour, IGameView
 	{
 		#region Constants
 		//======================================================================
@@ -29,12 +50,6 @@ namespace CgfGames
 		public Text mainText;
 		public Text scoreText;
 		public Text livesText;
-
-		#endregion
-
-		#region External references
-		//======================================================================
-
 
 		#endregion
 
@@ -79,16 +94,16 @@ namespace CgfGames
 			spawnSacucer ();
 		}
 
-		public void CancelSpawnSaucer ()
-		{
-			StopCoroutine ("WaitAndSpawnSaucer2");
-		}
-
 		public SaucerView SpawnSaucer (int size)
 		{				
 			this.saucerView.gameObject.SetActive (true);
 			this.saucerView.Init (size, SaucerCtrl.SPEED [size]);
 			return this.saucerView;
+		}
+		
+		public void CancelSpawnSaucer ()
+		{
+			StopCoroutine ("WaitAndSpawnSaucer2");
 		}
 
 		public void LevelFinished (Action onComplete)

@@ -67,7 +67,7 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			if (_shipCtrl.Active) {
+			if (_shipCtrl.IsActive) {
 				if (this.Size == BIG_SAUCER) {
 					_view.Fire (Random.Range (0, 360));
 				} else {
