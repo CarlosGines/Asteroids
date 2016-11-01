@@ -27,12 +27,38 @@ namespace CgfGames
 		void Awake ()
 		{
 			trans = transform;
-			Destroy (gameObject, SpaceObjectMngr.height * 0.8f / this.speed);
+		}
+
+		void OnEnable ()
+		{
+			StartCoroutine (this.Disable ());
+		}
+
+		private IEnumerator Disable ()
+		{
+			yield return new WaitForSeconds (SpaceObjectMngr.height * 0.8f / this.speed);
+			gameObject.SetActive (false);
 		}
 
 		void Update ()
 		{
 			trans.Translate (Vector3.right * speed * Time.deltaTime);
+		}
+
+		void OnTriggerEnter2D (Collider2D other)
+		{
+			if (CompareTag ("ShipShot")) {
+				if (other.CompareTag ("Asteroid") || other.CompareTag ("Saucer")) {
+					gameObject.SetActive (false);
+				}
+			} else if (CompareTag ("SaucerShot") && other.CompareTag ("Ship")) {
+				gameObject.SetActive (false);
+			}
+		}
+
+		void OnDisable ()
+		{
+			StopAllCoroutines ();
 		}
 
 		#endregion

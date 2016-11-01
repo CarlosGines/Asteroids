@@ -24,11 +24,17 @@ namespace CgfGames
 		//======================================================================
 
 		public GameObject shipPrefab;
-		public GameObject asteroidPrefab;
 		public GameObject saucerPrefab;
+		public ObjectPool asteroidsPool;
 		public Text mainText;
 		public Text scoreText;
 		public Text livesText;
+
+		#endregion
+
+		#region External references
+		//======================================================================
+
 
 		#endregion
 
@@ -46,9 +52,16 @@ namespace CgfGames
 			respawn ();
 		}
 		
-		public AsteroidCtrl SpawnAsteroid ()
+		public AsteroidView SpawnAsteroid ()
 		{				
-			return Instantiate (asteroidPrefab).GetComponent<AsteroidCtrl> ();
+			AsteroidView asteroidView = this.asteroidsPool.Get ().GetComponent<AsteroidView> ();
+			asteroidView.Init (
+				AsteroidCtrl.MAX_SIZE,
+				SpaceObjectMngr.RandomPos (),
+				Random.onUnitSphere,
+				this.asteroidsPool
+			);
+			return asteroidView;
 		}
 
 		public void WaitToSpawnSaucer (Action spawnSacucer)

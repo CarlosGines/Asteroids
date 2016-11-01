@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	public class AsteroidCtrl : MonoBehaviour
+	public class AsteroidCtrl
 	{
 		#region Constants
 		//======================================================================
@@ -21,10 +21,7 @@ namespace CgfGames
 		private int _size;
 		public int Size {
 			get { return _size; }
-			private set {
-				_size = value;
-				this.view.UpdateSize (value);
-			}
+			private set { _size = value; }
 		}
 
 		#endregion
@@ -46,15 +43,10 @@ namespace CgfGames
 		#region Init
 		//======================================================================
 
-		public void Init (int size)
+		public AsteroidCtrl (AsteroidView view, int size)
 		{
-			this.Init (size, SpaceObjectMngr.RandomPos (), Random.onUnitSphere);
-		}
-
-		public void Init (int size, Vector3 pos, Vector3 dir)
-		{
+			this.view = view;
 			this.Size = size;
-			this.view.Init (size, pos, dir);
 			this.view.HitEvent += this.Destroyed;
 		}
 
@@ -64,15 +56,22 @@ namespace CgfGames
 		//======================================================================
 
 		public void Destroyed ()
-		{
-			List<AsteroidCtrl> asteroidCtrlList = null;
+ 		{
+ 			List<AsteroidCtrl> asteroidCtrlList = null;
 			if (this.Size > 0) {
-				asteroidCtrlList = this.view.SpawnChildren (this.Size - 1);
+				int childSize = this.Size - 1;
+				asteroidCtrlList = new List<AsteroidCtrl> ();
+				List<AsteroidView> asteroidViewList = this.view.SpawnChildren (childSize);
+				foreach (AsteroidView asteroidView in asteroidViewList) {
+					AsteroidCtrl asteroidCtrl = new AsteroidCtrl (asteroidView, childSize);
+					asteroidCtrlList.Add (asteroidCtrl);
+				}
 			}
 			if (DestroyedEvent != null) {
 				this.DestroyedEvent (this, asteroidCtrlList);
 			}
 			this.view.Destroyed ();
+			this.view.HitEvent -= this.Destroyed;
 		}
 
 		#endregion

@@ -27,6 +27,13 @@ namespace CgfGames
 
 		#endregion
 
+		#region External references
+		//======================================================================
+
+		public ObjectPool asteroidPool;
+
+		#endregion
+
 		#region Cached fields
 		//======================================================================
 
@@ -50,7 +57,6 @@ namespace CgfGames
 		void OnTriggerEnter2D (Collider2D other)
 		{
 			if (other.CompareTag ("ShipShot")) {
-				Destroy (other.gameObject);
 				this.HitEvent ();
 			}
 		}
@@ -60,48 +66,43 @@ namespace CgfGames
 		#region Public methods
 		//======================================================================
 
-		public void Init (int size, Vector3 pos, Vector3 dir)
+		public void Init (int size, Vector3 pos, Vector3 dir, ObjectPool asteroidPool)
 		{
 			this.trans.position = pos;
 			this.trans.localScale = Vector3.one * (int) (Math.Pow (2, size));
 			this.translation = dir;
 			this.translation.z = 0;
 			this.translation = this.translation.normalized;
-			this.translation *= this.baseSpeed * (AsteroidCtrl.MAX_SIZE + 1 - size);
-
-		}
-
-		public void UpdateSize (int size)
-		{
-		}
-
-		public void SetPos (Vector3 pos)
-		{
-		}
-
-		public void SetTranslation (Vector3 dir, int size)
-		{
-
+			this.translation *= 
+				this.baseSpeed * (AsteroidCtrl.MAX_SIZE + 1 - size);
+			this.asteroidPool = asteroidPool;
 		}
 
 		public void Destroyed ()
 		{
-			Destroy (gameObject);
+			gameObject.SetActive (false);
 		}
 
-		public List<AsteroidCtrl> SpawnChildren (int size)
+		public List<AsteroidView> SpawnChildren (int size)
 		{
-			List<AsteroidCtrl> asteroidCtrlList = new List<AsteroidCtrl> ();
+			List<AsteroidView> asteroidViewList = new List<AsteroidView> ();
 			float startAngle = -CHILDREN_DELTA_ANGLE * (NUM_CHILDREN - 1) / 2;
-			Vector3 childDir = Quaternion.Euler (0, 0, startAngle) * this.translation;
+			Vector3 childDir = 
+				Quaternion.Euler (0, 0, startAngle) * this.translation;
 			for (int i = 0; i < NUM_CHILDREN; i++) {
-				AsteroidCtrl asteroidCtrl = 
-					Instantiate (gameObject).GetComponent<AsteroidCtrl> ();
-				asteroidCtrl.Init (size, this.trans.position, childDir);
-				asteroidCtrlList.Add (asteroidCtrl);
-				childDir = Quaternion.Euler (0, 0, CHILDREN_DELTA_ANGLE) * childDir;
+				AsteroidView asteroiView = 
+					asteroidPool.Get ().GetComponent<AsteroidView> ();
+				asteroiView.Init (
+					size,
+					this.trans.position,
+					childDir,
+					this.asteroidPool
+				);
+				asteroidViewList.Add (asteroiView);
+				childDir = 
+					Quaternion.Euler (0, 0, CHILDREN_DELTA_ANGLE) * childDir;
 			}
-			return asteroidCtrlList;
+			return asteroidViewList;
 		}
 
 		#endregion

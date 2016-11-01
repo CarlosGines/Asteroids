@@ -77,7 +77,6 @@ namespace CgfGames
 		void OnTriggerEnter2D (Collider2D other)
 		{
 			if (other.CompareTag ("ShipShot")) {
-				Destroy (other.gameObject);
 				if (this.HitEvent != null) {
 					this.HitEvent ();
 				}

@@ -33,7 +33,7 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 	
-		public GameObject shotPrefab;
+		public ObjectPool shotPool;
 
 		#endregion
 
@@ -85,7 +85,7 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			Instantiate (shotPrefab, trans.position, trans.rotation);
+			this.shotPool.Get (trans.position, trans.rotation);
 		}
 
 		public void Teleport (Action teleportDone)

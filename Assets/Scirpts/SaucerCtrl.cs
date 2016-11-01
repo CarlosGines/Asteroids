@@ -120,7 +120,7 @@ namespace CgfGames
 
 		private float GetShotAngleSimple ()
 		{
-			Vector2 dir = _shipCtrl.view.Pos - view.Pos;
+			Vector2 dir = _shipCtrl.Pos - view.Pos;
 			return Vector2.Angle (Vector2.right, dir) * Mathf.Sign (dir.y);
 		}
 
@@ -130,19 +130,19 @@ namespace CgfGames
 			float w = SpaceObjectMngr.width;
 			float targetX;
 			float targetY;
-			if (Mathf.Abs (_shipCtrl.view.Pos.x - view.Pos.x) < w / 2) {
-				targetX = _shipCtrl.view.Pos.x;
+			if (Mathf.Abs (_shipCtrl.Pos.x - view.Pos.x) < w / 2) {
+				targetX = _shipCtrl.Pos.x;
 			} else if (view.Pos.x > 0) {
-				targetX = _shipCtrl.view.Pos.x + w;
+				targetX = _shipCtrl.Pos.x + w;
 			} else {
-				targetX = _shipCtrl.view.Pos.x - w;
+				targetX = _shipCtrl.Pos.x - w;
 			}
-			if (Mathf.Abs (_shipCtrl.view.Pos.y - view.Pos.y) < h / 2) {
-				targetY = _shipCtrl.view.Pos.y;
+			if (Mathf.Abs (_shipCtrl.Pos.y - view.Pos.y) < h / 2) {
+				targetY = _shipCtrl.Pos.y;
 			} else if (view.Pos.y > 0) {
-				targetY = _shipCtrl.view.Pos.y + h;
+				targetY = _shipCtrl.Pos.y + h;
 			} else {
-				targetY = _shipCtrl.view.Pos.y - h;
+				targetY = _shipCtrl.Pos.y - h;
 			}
 			Vector2 dir = new Vector2 (targetX, targetY) - view.Pos;
 			return Vector2.Angle (Vector2.right, dir) * Mathf.Sign (dir.y);

@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	public class GameCtrl : MonoBehaviour
+	public class GameCtrl
 	{
 		#region Constants
 		//======================================================================
@@ -21,19 +21,12 @@ namespace CgfGames
 
 		#endregion
 
-		#region External references
+		#region Private fields
 		//======================================================================
 
-		public GameView view;
-		public ShipCtrl shipCtrl;
-
-		#endregion
-
-		#region Private properties
-		//======================================================================
-
-		[SerializeField]
+		private GameView _view;
 		private GameState _gameState;
+		private ShipCtrl _shipCtrl;
 		private SaucerCtrl _saucerCtrl;
 		private List<AsteroidCtrl> _asteroidCtrlList;
 
@@ -42,19 +35,15 @@ namespace CgfGames
 		#region Init
 		//======================================================================
 
-		void Start ()
+		public GameCtrl (GameView view, ShipCtrl shipCtrl)
 		{
-			this.Init ();
-			this.StartGame ();
-		}
-
-		void Init ()
-		{
+			_view = view;
 			_gameState = new GameState (0, INIT_LIVES, 0);
+			_shipCtrl = shipCtrl;
 			_asteroidCtrlList = new List<AsteroidCtrl> ();
 			_gameState.ScoreUpdatedEvent += this.ScoreUpdated;
-			_gameState.LivesUpdatedEvent += this.view.UpdateLives;
-			shipCtrl.DestroyedEvent += ShipDestroyed;
+			_gameState.LivesUpdatedEvent += _view.UpdateLives;
+			_shipCtrl.DestroyedEvent += ShipDestroyed;
 		}
 
 		#endregion
@@ -65,8 +54,8 @@ namespace CgfGames
 		public void StartGame ()
 		{
 			this.StartLevel ();
-			view.UpdateScore (0, _gameState.Score);
-			view.UpdateLives (0, _gameState.Lives);
+			_view.UpdateScore (0, _gameState.Score);
+			_view.UpdateLives (0, _gameState.Lives);
 		}
 
 
@@ -76,13 +65,15 @@ namespace CgfGames
 			for (int i = 0; i < _gameState.Level + 3 ; i++) {
 				this.SpawnAsteroid ();
 			}
-			this.view.WaitToSpawnSaucer(this.SpawnSaucer);
+			_view.WaitToSpawnSaucer(this.SpawnSaucer);
 		}
 
 		public void SpawnAsteroid ()
 		{
-			AsteroidCtrl asteroidCtrl = this.view.SpawnAsteroid ();
-			asteroidCtrl.Init (AsteroidCtrl.MAX_SIZE);
+			AsteroidCtrl asteroidCtrl = new AsteroidCtrl (
+				_view.SpawnAsteroid (),
+				AsteroidCtrl.MAX_SIZE
+			);
 			_asteroidCtrlList.Add (asteroidCtrl);
 			asteroidCtrl.DestroyedEvent += AsteroidDestroyed;
 		}
@@ -94,15 +85,15 @@ namespace CgfGames
 
 		public void SpawnSaucer (int size)
 		{
-			_saucerCtrl = this.view.SpawnSaucer ();
-			_saucerCtrl.Init (_gameState, shipCtrl, size);
+			_saucerCtrl = _view.SpawnSaucer ();
+			_saucerCtrl.Init (_gameState, _shipCtrl, size);
 			_saucerCtrl.DestroyedEvent += SaucerDestroyed;
 			_saucerCtrl.GoneEvent += SaucerGone;
 		}
 
 		public void GameOver ()
 		{
-			view.GameOver ();
+			_view.GameOver ();
 		}
 
 		#endregion
@@ -115,24 +106,24 @@ namespace CgfGames
 			if (oldScore / 10000 < score / 10000) {
 				_gameState.Lives++;
 			}
-			this.view.UpdateScore (oldScore, score);
+			_view.UpdateScore (oldScore, score);
 		}
 
 		private void ShipDestroyed ()
 		{
-			this.view.CancelSpawnSaucer ();
+			_view.CancelSpawnSaucer ();
 			if (_gameState.Lives == 0) {
 				this.GameOver ();
 			} else {
 				_gameState.Lives--;
-				this.view.WaitToRespawnShip (this.RespawnShip);
+				_view.WaitToRespawnShip (this.RespawnShip);
 			}
 		}
 
 		private void RespawnShip ()
 		{
-			shipCtrl.Respawn ();
-			this.view.WaitToSpawnSaucer(this.SpawnSaucer);
+			_shipCtrl.Respawn ();
+			_view.WaitToSpawnSaucer(this.SpawnSaucer);
 		}
 
 		private void AsteroidDestroyed (AsteroidCtrl asteroidCtrl,
@@ -173,22 +164,22 @@ namespace CgfGames
 		{
 			_gameState.Score += SAUCERS_POINTS [saucerCtrl.Size];
 			_saucerCtrl = null;
-			this.view.WaitToSpawnSaucer(this.SpawnSaucer);
+			_view.WaitToSpawnSaucer(this.SpawnSaucer);
 			this.CheckLevelFinished ();
 		}
 
 		private void SaucerGone (SaucerCtrl saucerCtrl)
 		{
 			_saucerCtrl = null;
-			this.view.WaitToSpawnSaucer(this.SpawnSaucer);
+			_view.WaitToSpawnSaucer(this.SpawnSaucer);
 			this.CheckLevelFinished ();
 		}
 
 		private void CheckLevelFinished ()
 		{
 			if (_asteroidCtrlList.Count == 0 && _saucerCtrl == null) {
-				this.view.CancelSpawnSaucer ();
-				this.view.LevelFinished (this.StartLevel);
+				_view.CancelSpawnSaucer ();
+				_view.LevelFinished (this.StartLevel);
 			}
 		}
 

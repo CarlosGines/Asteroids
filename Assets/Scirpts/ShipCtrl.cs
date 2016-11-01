@@ -3,12 +3,13 @@ using System;
 
 namespace CgfGames
 {
-	public class ShipCtrl : MonoBehaviour
+	public class ShipCtrl
 	{
 		#region Public fields
 		//======================================================================
 
 		public bool Active { get; private set; }
+		public Vector2 Pos { get { return _view.Pos; } }
 
 		#endregion
 
@@ -19,20 +20,21 @@ namespace CgfGames
 
 		#endregion
 
-		#region External references
+		#region Private fields
 		//======================================================================
 	
-		public ShipView view;
+		private ShipView _view;
 
 		#endregion
 
 		#region Init
 		//======================================================================
 
-		void Awake ()
+		public ShipCtrl (ShipView view)
 		{
+			_view = view;
 			this.Active = true;
-			this.view.HitEvent += this.Destroyed;
+			_view.HitEvent += this.Destroyed;
 		}
 
 		#endregion
@@ -43,21 +45,21 @@ namespace CgfGames
 		public void Rotate (float direction)
 		{
 			if (this.Active) {
-				this.view.Rotate (direction);
+				this._view.Rotate (direction);
 			}
 		}
 
 		public void Thrust ()
 		{
 			if (this.Active) {
-				this.view.Thrust ();
+				_view.Thrust ();
 			}
 		}
 
 		public void Fire ()
 		{
 			if (this.Active) {
-				this.view.Fire ();
+				_view.Fire ();
 			}
 		}
 
@@ -65,7 +67,7 @@ namespace CgfGames
 		{
 			if (this.Active) {
 				this.Active = false;
-				this.view.Teleport (TeleportDone);
+				_view.Teleport (TeleportDone);
 			}
 		}
 
@@ -77,7 +79,7 @@ namespace CgfGames
 		public void Destroyed ()
 		{
 			this.Active = false;
-			this.view.Destroyed ();
+			_view.Destroyed ();
 			if (this.DestroyedEvent != null) {
 				this.DestroyedEvent ();
 			}
@@ -86,7 +88,7 @@ namespace CgfGames
 		public void Respawn ()
 		{
 			this.Active = true;
-			this.view.Respawn ();
+			_view.Respawn ();
 		}
 
 		#endregion
