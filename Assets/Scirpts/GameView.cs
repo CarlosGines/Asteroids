@@ -46,6 +46,7 @@ namespace CgfGames
 
 		public GameObject shipPrefab;
 		public ObjectPool asteroidsPool;
+		public ObjectPool powerupPool;
 		public SaucerView saucerView;
 		public Text mainText;
 		public Text scoreText;
@@ -73,8 +74,9 @@ namespace CgfGames
 			asteroidView.Init (
 				AsteroidCtrl.MAX_SIZE,
 				SpaceObjectMngr.RandomPos (),
-				Random.onUnitSphere,
-				this.asteroidsPool
+				Quaternion.Euler (0, 0, Random.value * 360),
+				this.asteroidsPool,
+				this.powerupPool
 			);
 			return asteroidView;
 		}

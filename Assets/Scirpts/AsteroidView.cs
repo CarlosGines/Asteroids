@@ -10,7 +10,8 @@ namespace CgfGames
 	{
 		event Action HitEvent;
 
-		void Init (int size, Vector3 pos, Vector3 dir, ObjectPool asteroidPool);
+		void Init (int size, Vector3 pos, Quaternion rot, ObjectPool asteroidPool,
+           ObjectPool powerupPool);
 
 		void Destroyed ();
 
@@ -32,16 +33,17 @@ namespace CgfGames
 		//======================================================================
 
 		public float baseSpeed;
-		public Vector3 translation;
+		public float speed;
 
 		public event Action HitEvent;
 
 		#endregion
 
-		#region External references
+		#region Scene references
 		//======================================================================
 
 		public ObjectPool asteroidPool;
+		public ObjectPool powerupPool;
 
 		#endregion
 
@@ -62,7 +64,7 @@ namespace CgfGames
 
 		void Update ()
 		{
-			this.trans.Translate (this.translation * Time.deltaTime);
+			this.trans.Translate (this.speed * Time.deltaTime, 0, 0);
 		}
 
 		void OnTriggerEnter2D (Collider2D other)
@@ -77,17 +79,16 @@ namespace CgfGames
 		#region Public methods
 		//======================================================================
 
-		public void Init (int size, Vector3 pos, Vector3 dir,
-			ObjectPool asteroidPool)
+		public void Init (int size, Vector3 pos, Quaternion rot,
+			ObjectPool asteroidPool, ObjectPool powerupPool)
 		{
 			this.trans.position = pos;
-			this.trans.localScale = Vector3.one * 1.6f * (int) (Math.Pow (2, size));
-			this.translation = dir;
-			this.translation.z = 0;
-			this.translation = this.translation.normalized;
-			this.translation *= 
-				this.baseSpeed * (AsteroidCtrl.MAX_SIZE + 1 - size);
+			this.trans.rotation = rot;
+			this.trans.localScale = Vector3.one * 1.6f *
+				(int)Math.Pow (2, size);
 			this.asteroidPool = asteroidPool;
+			this.powerupPool = powerupPool;
+			this.speed = this.baseSpeed * (AsteroidCtrl.MAX_SIZE + 1 - size);
 		}
 
 		public void Destroyed ()
@@ -99,19 +100,40 @@ namespace CgfGames
 		{
 			List<IAsteroidView> asteroidViewList = new List<IAsteroidView> ();
 			float startAngle = -CHILDREN_DELTA_ANGLE * (NUM_CHILDREN - 1) / 2;
-			Vector3 childDir = 
-				Quaternion.Euler (0, 0, startAngle) * this.translation;
+			Quaternion childRot = Quaternion.Euler (0, 0, startAngle) *
+            	this.trans.rotation;
 			for (int i = 0; i < NUM_CHILDREN; i++) {
-				IAsteroidView asteroiView = 
-					asteroidPool.Get ().GetComponent<AsteroidView> ();
+				IAsteroidView asteroiView = asteroidPool.Get ()
+					.GetComponent<AsteroidView> ();
 				asteroiView.Init (
-					childSize, this.trans.position, childDir, this.asteroidPool
+					childSize,
+					this.trans.position,
+					childRot,
+					this.asteroidPool,
+					this.powerupPool
 				);
 				asteroidViewList.Add (asteroiView);
-				childDir = 
-					Quaternion.Euler (0, 0, CHILDREN_DELTA_ANGLE) * childDir;
+				childRot = Quaternion.Euler (0, 0, CHILDREN_DELTA_ANGLE) *
+					childRot;
 			}
 			return asteroidViewList;
+		}
+
+		public void TrySpawnPowerup ()
+		{
+			float value = Random.value;
+			if (value < 0.5f) {
+				WeaponPowerupMngr powerup = 
+					powerupPool.Get (trans.position, trans.rotation)
+					.GetComponent<WeaponPowerupMngr> ();
+				if (value < 1f / 6f) {
+					powerup.Init (WeaponType.BLUE);
+				} else if (value < 2f / 6f) {
+					powerup.Init (WeaponType.YELLOW);
+				} else if (value < 3f / 6f) {
+					powerup.Init (WeaponType.RED);
+				} 
+			}
 		}
 
 		#endregion

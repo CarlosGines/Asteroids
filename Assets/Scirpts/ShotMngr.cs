@@ -31,10 +31,10 @@ namespace CgfGames
 
 		void OnEnable ()
 		{
-			StartCoroutine (this.Disable ());
+			StartCoroutine (this.TimedDisable ());
 		}
 
-		private IEnumerator Disable ()
+		private IEnumerator TimedDisable ()
 		{
 			yield return new WaitForSeconds (SpaceObjectMngr.height * 0.8f / this.speed);
 			gameObject.SetActive (false);
@@ -42,7 +42,7 @@ namespace CgfGames
 
 		void Update ()
 		{
-			trans.Translate (Vector3.right * speed * Time.deltaTime);
+			trans.Translate (speed * Time.deltaTime, 0, 0);
 		}
 
 		void OnTriggerEnter2D (Collider2D other)

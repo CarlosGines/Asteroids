@@ -10,11 +10,13 @@ namespace CgfGames
 
 		event Action HitEvent;
 
+		event Action<WeaponType, int> NewWeaponEvent;
+
+		IWeaponView GetWeapon (WeaponType type);
+
 		void Rotate (float direction);
 
 		void Thrust ();
-
-		void Fire ();
 
 		void Teleport (Action teleportDone);
 
@@ -30,7 +32,6 @@ namespace CgfGames
 		//======================================================================
 
 		private const float TELEPORT_TIME = 2f;
-		private const string SHIP_SHOT_TAG = "ShipShot";
 
 		#endregion
 
@@ -47,15 +48,20 @@ namespace CgfGames
 		//======================================================================
 
 		public event Action HitEvent;
+		public event Action<WeaponType, int> NewWeaponEvent;
 
 		#endregion
 
-		#region External references
+		#region Scene references
 		//======================================================================
-	
-		public ObjectPool shotPool;
+
+		public BaseWeaponView baseWeaponView;
+		public BlueWeaponView blueWeaponView;
+		public YellowWeaponView yellowWeaponView;
+		public RedWeaponView redWeaponView;
 
 		#endregion
+
 
 		#region Cached components
 		//======================================================================
@@ -93,6 +99,23 @@ namespace CgfGames
 		#region IShipView public methods
 		//======================================================================
 
+		public IWeaponView GetWeapon (WeaponType type)
+		{
+			
+			switch (type) {
+			case WeaponType.BASE:
+				return this.baseWeaponView;
+			case WeaponType.BLUE:
+				return this.blueWeaponView;
+			case WeaponType.YELLOW:
+				return this.yellowWeaponView;
+			case WeaponType.RED:
+				return this.redWeaponView;
+			default:
+				throw new UnityException ("This weapon does not exist");
+			}
+		}
+
 		public void Rotate (float direction)
 		{
 			this.trans.Rotate (0, 0, angSpeed * Time.deltaTime * -direction);
@@ -101,14 +124,6 @@ namespace CgfGames
 		public void Thrust ()
 		{
 			this.rb.AddForce (trans.right * thrustForce);
-		}
-
-		public void Fire ()
-		{
-			GameObject shotGobj = this.shotPool.Get (
-				trans.position, trans.rotation
-			);
-			shotGobj.tag = SHIP_SHOT_TAG;
 		}
 
 		public void Teleport (Action teleportDone)
@@ -137,6 +152,19 @@ namespace CgfGames
 		{
 			this.trans.position = Vector3.zero;
 			gameObject.SetActive (true);
+		}
+
+		#endregion
+
+		#region Public methods
+		//======================================================================
+
+		public void NewWeapon (WeaponType type, int ammo)
+		{
+			if (this.NewWeaponEvent != null)
+			{
+				this.NewWeaponEvent (type, ammo);
+			}
 		}
 
 		#endregion

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Random = UnityEngine.Random;
@@ -63,21 +64,27 @@ namespace CgfGames
 
 		public void Destroyed ()
  		{
- 			List<IAsteroidCtrl> asteroidCtrlList = null;
+			List<IAsteroidCtrl> asteroidCtrlList = null;
+			if (this.Size == MAX_SIZE) {
+				this.View.TrySpawnPowerup ();
+			}
 			if (this.Size > 0) {
-				int childSize = this.Size - 1;
-				asteroidCtrlList = new List<IAsteroidCtrl> ();
-				List<IAsteroidView> asteroidViewList = this.View.SpawnChildren (childSize);
-				foreach (IAsteroidView asteroidView in asteroidViewList) {
-					AsteroidCtrl asteroidCtrl = new AsteroidCtrl (asteroidView, childSize);
-					asteroidCtrlList.Add (asteroidCtrl);
-				}
+				asteroidCtrlList = this.SpawnChildren ();
 			}
 			if (DestroyedEvent != null) {
 				this.DestroyedEvent (this, asteroidCtrlList);
 			}
 			this.View.Destroyed ();
 			this.View.HitEvent -= this.Destroyed;
+		}
+
+		private List<IAsteroidCtrl> SpawnChildren ()
+		{
+			int childSize = this.Size - 1;
+			return this.View.SpawnChildren (childSize)
+				.Select ((view) => 
+					new AsteroidCtrl (view, childSize) as IAsteroidCtrl)
+				.ToList ();
 		}
 
 		#endregion
