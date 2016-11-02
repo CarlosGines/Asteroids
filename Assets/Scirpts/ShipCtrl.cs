@@ -26,6 +26,7 @@ namespace CgfGames
 		void Respawn ();
 	}
 
+	[Serializable]
 	public class ShipCtrl : IShipCtrl
 	{
 		#region Public fields
@@ -35,7 +36,7 @@ namespace CgfGames
 		public bool IsAlive { get; private set; }
 		public Vector2 Pos { get { return this.View.Pos; } }
 
-		public IShipView View { get; private set; }
+		public ShipView View { get; private set; }
 
 
 		#endregion
@@ -58,7 +59,7 @@ namespace CgfGames
 
 		public ShipCtrl (IShipView view)
 		{
-			this.View = view;
+			this.View = view as ShipView;
 			this.IsAlive = true;
 			this.IsActive = true;
 			this.View.HitEvent += this.Destroyed;

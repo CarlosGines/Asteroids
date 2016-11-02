@@ -15,6 +15,7 @@ namespace CgfGames
 		void Destroyed ();
 	}
 
+	[Serializable]
 	public class AsteroidCtrl : IAsteroidCtrl
 	{
 		#region Constants
@@ -41,7 +42,7 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 
-		public IAsteroidView View;
+		public AsteroidView View;
 
 		#endregion
 
@@ -50,7 +51,7 @@ namespace CgfGames
 
 		public AsteroidCtrl (IAsteroidView view, int size)
 		{
-			this.View = view;
+			this.View = view as AsteroidView;
 			this.Size = size;
 			this.View.HitEvent += this.Destroyed;
 		}

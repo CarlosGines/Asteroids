@@ -4,27 +4,27 @@ namespace CgfGames
 {
 	public class InputMngr : MonoBehaviour {
 
-		public ShipCtrl shipCtrl;
+		public ShipCtrl ship;
 
 		// Update is called once per frame
 		void Update () 
 		{
 			if (Input.GetButtonDown ("Fire")) {
-				shipCtrl.Fire ();
+				ship.Fire ();
 			}
 			if (Input.GetButtonDown ("Teleport")) {
-				shipCtrl.Teleport ();
+				ship.Teleport ();
 			}
 			float h = Input.GetAxis ("Horizontal");
 			if (h != 0) {
-				shipCtrl.Rotate (h);
+				ship.Rotate (h);
 			}
 		}
 
 		void FixedUpdate ()
 		{
 			if (Input.GetButton ("Thrust")) {
-				shipCtrl.Thrust ();
+				ship.Thrust ();
 			}
 		}
 	}

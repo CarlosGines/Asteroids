@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Random = UnityEngine.Random;
 
@@ -34,6 +35,7 @@ namespace CgfGames
 
 	}
 
+	[Serializable]
 	public class GameCtrl
 	{
 		#region Constants
@@ -51,11 +53,15 @@ namespace CgfGames
 		#region Public fields & properties
 		//======================================================================
 
-		public GameState GameState { get; private set; }
-		public IGameView View { get; private set; }
-		public IShipCtrl Ship { get; private set; }
-		public ISaucerCtrl Saucer { get; private set; } 
-		public List<IAsteroidCtrl> AsteroidList { get; private set; }
+		[SerializeField]
+		private GameState _gameState;
+		public GameState GameState {
+			get { return _gameState; } private set { _gameState = value; }
+		}
+		public GameView View { get; private set; }
+		public ShipCtrl Ship { get; private set; }
+		public SaucerCtrl Saucer { get; private set; } 
+		public List<AsteroidCtrl> AsteroidList { get; private set; }
 
 		#endregion
 
@@ -69,10 +75,10 @@ namespace CgfGames
 
 		public GameCtrl (GameState gameState, IGameView view, IShipCtrl ship)
 		{
-			this.View = view;
+			this.View = view as GameView;
 			this.GameState = gameState;
-			this.Ship = ship;
-			this.AsteroidList = new List<IAsteroidCtrl> ();
+			this.Ship = ship as ShipCtrl;
+			this.AsteroidList = new List<AsteroidCtrl> ();
 			this.GameState.ScoreUpdatedEvent += this.ScoreUpdated;
 			this.GameState.LivesUpdatedEvent += this.View.UpdateLives;
 			this.Ship.DestroyedEvent += this.ShipDestroyed;
@@ -125,12 +131,14 @@ namespace CgfGames
 		{
 			this.GameState.Score += ASTEROIDS_POINTS[asteroidCtrl.Size];
 			if (childAsteroidCtrls != null) {
-				this.AsteroidList.AddRange (childAsteroidCtrls);
+				this.AsteroidList.AddRange (
+					childAsteroidCtrls.Cast<AsteroidCtrl> ().ToList ()
+				);
 				foreach (AsteroidCtrl ac in childAsteroidCtrls) {
 					ac.DestroyedEvent += this.AsteroidDestroyed;
 				}
 			}
-			this.AsteroidList.Remove (asteroidCtrl);
+			this.AsteroidList.Remove (asteroidCtrl as AsteroidCtrl);
 			this.CheckLevelFinished ();
 		}
 

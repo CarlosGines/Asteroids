@@ -8,15 +8,14 @@ namespace CgfGames
 		public ShipView shipView;
 		public InputMngr inputMngr;
 
+		public GameCtrl game;
+
 		// Use this for initialization
 		void Start () {
-			ShipCtrl shipCtrl = new ShipCtrl (this.shipView);
-			this.inputMngr.shipCtrl = shipCtrl;
-			GameCtrl gameCtrl = new GameCtrl (
-				this.gameView,
-				shipCtrl
-			);
-			gameCtrl.StartGame ();
+			ShipCtrl ship = new ShipCtrl (this.shipView);
+			this.inputMngr.ship = ship;
+			game = new GameCtrl (this.gameView, ship);
+			game.StartGame ();
 		}
 	}
 }

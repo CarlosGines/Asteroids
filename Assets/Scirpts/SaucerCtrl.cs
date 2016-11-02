@@ -23,8 +23,9 @@ namespace CgfGames
 		void Gone ();
 	}
 
-	public class SaucerCtrl : ISaucerCtrl {
-
+	[Serializable]
+	public class SaucerCtrl : ISaucerCtrl
+	{
 		#region Constants
 		//======================================================================
 
@@ -43,8 +44,8 @@ namespace CgfGames
 		public int Size { get; private set; }
 
 		public GameState GameState { get; private set; }
-		public ISaucerView View { get; private set; }
-		public IShipCtrl Ship { get; private set; }
+		public SaucerView View { get; private set; }
+		public ShipCtrl Ship { get; private set; }
 
 		#endregion
 
@@ -60,11 +61,11 @@ namespace CgfGames
 		//======================================================================
 
 		public SaucerCtrl (GameState gameState, ISaucerView view, 
-				IShipCtrl shipCtrl, int size)
+				IShipCtrl ship, int size)
 		{
 			this.GameState = gameState;
-			this.View = view;
-			this.Ship = shipCtrl;
+			this.View = view as SaucerView;
+			this.Ship = ship as ShipCtrl;
 			this.Size = size;
 			this.View.RepeatFire (this.Fire, SHOT_PERIOD [size]);
 			this.Ship.DestroyedEvent += this.ShipDestroyed;
