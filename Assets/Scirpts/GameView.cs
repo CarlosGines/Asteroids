@@ -12,11 +12,11 @@ namespace CgfGames
 	{
 		void WaitToRespawnShip (Action respawn);
 	
-		AsteroidView SpawnAsteroid ();
+		IAsteroidView SpawnAsteroid ();
 
 		void WaitToSpawnSaucer (Action spawnSacucer);
 
-		SaucerView SpawnSaucer (int size);
+		ISaucerView SpawnSaucer (int size);
 
 		void CancelSpawnSaucer ();
 
@@ -53,7 +53,7 @@ namespace CgfGames
 
 		#endregion
 
-		#region Public methods
+		#region IGameView Public methods
 		//======================================================================
 
 		public void WaitToRespawnShip (Action respawn)
@@ -67,7 +67,7 @@ namespace CgfGames
 			respawn ();
 		}
 		
-		public AsteroidView SpawnAsteroid ()
+		public IAsteroidView SpawnAsteroid ()
 		{				
 			AsteroidView asteroidView = this.asteroidsPool.Get ().GetComponent<AsteroidView> ();
 			asteroidView.Init (
@@ -94,7 +94,7 @@ namespace CgfGames
 			spawnSacucer ();
 		}
 
-		public SaucerView SpawnSaucer (int size)
+		public ISaucerView SpawnSaucer (int size)
 		{				
 			this.saucerView.gameObject.SetActive (true);
 			this.saucerView.Init (size, SaucerCtrl.SPEED [size]);

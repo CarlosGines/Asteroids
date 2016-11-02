@@ -6,8 +6,27 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	public class SaucerView : MonoBehaviour {
+	public interface ISaucerView
+	{
+		Vector2 Pos { get; }
 
+		event Action HitEvent;
+
+		event Action GoneEvent;
+
+		void Init (int size, float speed);
+
+		void RepeatFire (Action fire, float period);
+
+		void Fire (float angle);
+
+		void ShipDestroyed ();
+
+		void Destroyed ();
+	}
+
+	public class SaucerView : MonoBehaviour, ISaucerView
+	{
 		#region Constants
 		//======================================================================
 
@@ -82,6 +101,11 @@ namespace CgfGames
 					this.HitEvent ();
 				}
 			}
+		}
+
+		void OnDisable ()
+		{
+			StopAllCoroutines ();
 		}
 
 		#endregion

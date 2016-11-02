@@ -90,7 +90,7 @@ namespace CgfGames
 
 		#endregion
 
-		#region IShipView implementation
+		#region IShipView public methods
 		//======================================================================
 
 		public void Rotate (float direction)
@@ -116,7 +116,7 @@ namespace CgfGames
 			StartCoroutine (Teleport2 (teleportDone));
 		}
 
-		public IEnumerator Teleport2 (Action teleportDone)
+		private IEnumerator Teleport2 (Action teleportDone)
 		{
 			this.rb.Sleep ();
 			this.rend.enabled = false;

@@ -42,6 +42,10 @@ namespace CgfGames
 		public event Action<int, int> ScoreUpdatedEvent;
 		public event Action<int, int> LivesUpdatedEvent;
 
+		public GameState ()
+		{
+		}
+
 		public GameState (int score, int lives, int level)
 		{
 			_score = score;

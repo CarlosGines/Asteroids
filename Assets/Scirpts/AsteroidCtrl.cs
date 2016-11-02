@@ -6,7 +6,16 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	public class AsteroidCtrl
+	public interface IAsteroidCtrl
+	{
+		int Size { get; }
+
+		event Action<IAsteroidCtrl, List<IAsteroidCtrl>> DestroyedEvent;
+
+		void Destroyed ();
+	}
+
+	public class AsteroidCtrl : IAsteroidCtrl
 	{
 		#region Constants
 		//======================================================================
@@ -18,36 +27,32 @@ namespace CgfGames
 		#region Public fields & properties
 		//======================================================================
 
-		private int _size;
-		public int Size {
-			get { return _size; }
-			private set { _size = value; }
-		}
+		public int Size { get; private set; }
 
 		#endregion
 
 		#region Events
 		//======================================================================
 
-		public event Action<AsteroidCtrl, List<AsteroidCtrl>> DestroyedEvent;
+		public event Action<IAsteroidCtrl, List<IAsteroidCtrl>> DestroyedEvent;
 		
 		#endregion
 
 		#region External references
 		//======================================================================
 
-		public AsteroidView view;
+		public IAsteroidView View;
 
 		#endregion
 
 		#region Init
 		//======================================================================
 
-		public AsteroidCtrl (AsteroidView view, int size)
+		public AsteroidCtrl (IAsteroidView view, int size)
 		{
-			this.view = view;
+			this.View = view;
 			this.Size = size;
-			this.view.HitEvent += this.Destroyed;
+			this.View.HitEvent += this.Destroyed;
 		}
 
 		#endregion
@@ -57,12 +62,12 @@ namespace CgfGames
 
 		public void Destroyed ()
  		{
- 			List<AsteroidCtrl> asteroidCtrlList = null;
+ 			List<IAsteroidCtrl> asteroidCtrlList = null;
 			if (this.Size > 0) {
 				int childSize = this.Size - 1;
-				asteroidCtrlList = new List<AsteroidCtrl> ();
-				List<AsteroidView> asteroidViewList = this.view.SpawnChildren (childSize);
-				foreach (AsteroidView asteroidView in asteroidViewList) {
+				asteroidCtrlList = new List<IAsteroidCtrl> ();
+				List<IAsteroidView> asteroidViewList = this.View.SpawnChildren (childSize);
+				foreach (IAsteroidView asteroidView in asteroidViewList) {
 					AsteroidCtrl asteroidCtrl = new AsteroidCtrl (asteroidView, childSize);
 					asteroidCtrlList.Add (asteroidCtrl);
 				}
@@ -70,8 +75,8 @@ namespace CgfGames
 			if (DestroyedEvent != null) {
 				this.DestroyedEvent (this, asteroidCtrlList);
 			}
-			this.view.Destroyed ();
-			this.view.HitEvent -= this.Destroyed;
+			this.View.Destroyed ();
+			this.View.HitEvent -= this.Destroyed;
 		}
 
 		#endregion

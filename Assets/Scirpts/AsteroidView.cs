@@ -6,8 +6,19 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
+	public interface IAsteroidView
+	{
+		event Action HitEvent;
+
+		void Init (int size, Vector3 pos, Vector3 dir, ObjectPool asteroidPool);
+
+		void Destroyed ();
+
+		List<IAsteroidView> SpawnChildren (int size);
+	}
+
 	[RequireComponent (typeof (SpaceObjectMngr))]
-	public class AsteroidView : MonoBehaviour
+	public class AsteroidView : MonoBehaviour, IAsteroidView
 	{
 		#region Constants
 		//======================================================================
@@ -66,7 +77,8 @@ namespace CgfGames
 		#region Public methods
 		//======================================================================
 
-		public void Init (int size, Vector3 pos, Vector3 dir, ObjectPool asteroidPool)
+		public void Init (int size, Vector3 pos, Vector3 dir,
+			ObjectPool asteroidPool)
 		{
 			this.trans.position = pos;
 			this.trans.localScale = Vector3.one * 1.6f * (int) (Math.Pow (2, size));
@@ -83,20 +95,17 @@ namespace CgfGames
 			gameObject.SetActive (false);
 		}
 
-		public List<AsteroidView> SpawnChildren (int size)
+		public List<IAsteroidView> SpawnChildren (int childSize)
 		{
-			List<AsteroidView> asteroidViewList = new List<AsteroidView> ();
+			List<IAsteroidView> asteroidViewList = new List<IAsteroidView> ();
 			float startAngle = -CHILDREN_DELTA_ANGLE * (NUM_CHILDREN - 1) / 2;
 			Vector3 childDir = 
 				Quaternion.Euler (0, 0, startAngle) * this.translation;
 			for (int i = 0; i < NUM_CHILDREN; i++) {
-				AsteroidView asteroiView = 
+				IAsteroidView asteroiView = 
 					asteroidPool.Get ().GetComponent<AsteroidView> ();
 				asteroiView.Init (
-					size,
-					this.trans.position,
-					childDir,
-					this.asteroidPool
+					childSize, this.trans.position, childDir, this.asteroidPool
 				);
 				asteroidViewList.Add (asteroiView);
 				childDir = 

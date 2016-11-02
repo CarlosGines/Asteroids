@@ -3,14 +3,40 @@ using System;
 
 namespace CgfGames
 {
-	public class ShipCtrl
+	public interface IShipCtrl
+	{
+		bool IsActive { get; }
+
+		bool IsAlive { get; }
+
+		Vector2 Pos { get; }
+
+		event Action DestroyedEvent;
+
+		void Rotate (float direction);
+
+		void Thrust ();
+
+		void Fire ();
+
+		void Teleport ();
+
+		void Destroyed ();
+
+		void Respawn ();
+	}
+
+	public class ShipCtrl : IShipCtrl
 	{
 		#region Public fields
 		//======================================================================
 
 		public bool IsActive { get; private set; }
 		public bool IsAlive { get; private set; }
-		public Vector2 Pos { get { return _view.Pos; } }
+		public Vector2 Pos { get { return this.View.Pos; } }
+
+		public IShipView View { get; private set; }
+
 
 		#endregion
 
@@ -24,7 +50,6 @@ namespace CgfGames
 		#region Private fields
 		//======================================================================
 	
-		private IShipView _view;
 
 		#endregion
 
@@ -33,35 +58,35 @@ namespace CgfGames
 
 		public ShipCtrl (IShipView view)
 		{
-			_view = view;
+			this.View = view;
 			this.IsAlive = true;
 			this.IsActive = true;
-			_view.HitEvent += this.Destroyed;
+			this.View.HitEvent += this.Destroyed;
 		}
 
 		#endregion
 
-		#region Public methods
+		#region IShipCtrl Public methods
 		//======================================================================
 
 		public void Rotate (float direction)
 		{
 			if (this.IsActive) {
-				this._view.Rotate (direction);
+				this.View.Rotate (direction);
 			}
 		}
 
 		public void Thrust ()
 		{
 			if (this.IsActive) {
-				_view.Thrust ();
+				this.View.Thrust ();
 			}
 		}
 
 		public void Fire ()
 		{
 			if (this.IsActive) {
-				_view.Fire ();
+				this.View.Fire ();
 			}
 		}
 
@@ -69,7 +94,7 @@ namespace CgfGames
 		{
 			if (this.IsActive) {
 				this.IsActive = false;
-				_view.Teleport (TeleportDone);
+				this.View.Teleport (TeleportDone);
 			}
 		}
 
@@ -82,7 +107,7 @@ namespace CgfGames
 		{
 			this.IsAlive = false;
 			this.IsActive = false;
-			_view.Destroyed ();
+			this.View.Destroyed ();
 			if (this.DestroyedEvent != null) {
 				this.DestroyedEvent ();
 			}
@@ -93,7 +118,7 @@ namespace CgfGames
 			if (!this.IsAlive) {
 				this.IsAlive = true;
 				this.IsActive = true;
-				_view.Respawn ();
+				this.View.Respawn ();
 			}
 		}
 

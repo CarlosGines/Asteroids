@@ -6,7 +6,24 @@ using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	public class SaucerCtrl {
+	public interface ISaucerCtrl
+	{
+		int Size { get; }
+
+		event Action<ISaucerCtrl> DestroyedEvent;
+
+		event Action<ISaucerCtrl> GoneEvent;
+
+		void Fire ();
+
+		void ShipDestroyed ();
+
+		void Destroyed ();
+
+		void Gone ();
+	}
+
+	public class SaucerCtrl : ISaucerCtrl {
 
 		#region Constants
 		//======================================================================
@@ -25,39 +42,34 @@ namespace CgfGames
 
 		public int Size { get; private set; }
 
+		public GameState GameState { get; private set; }
+		public ISaucerView View { get; private set; }
+		public IShipCtrl Ship { get; private set; }
+
 		#endregion
 
 		#region Events
 		//======================================================================
 
-		public event Action<SaucerCtrl> DestroyedEvent;
-		public event Action<SaucerCtrl> GoneEvent;
-
-		#endregion
-
-		#region Private fields
-		//======================================================================
-
-		private GameState _gameState;
-		private SaucerView _view;
-		private ShipCtrl _shipCtrl;
+		public event Action<ISaucerCtrl> DestroyedEvent;
+		public event Action<ISaucerCtrl> GoneEvent;
 
 		#endregion
 
 		#region Init
 		//======================================================================
 
-		public SaucerCtrl (GameState gameState, SaucerView view, 
-				ShipCtrl shipCtrl, int size)
+		public SaucerCtrl (GameState gameState, ISaucerView view, 
+				IShipCtrl shipCtrl, int size)
 		{
-			_gameState = gameState;
-			_view = view;
-			_shipCtrl = shipCtrl;
+			this.GameState = gameState;
+			this.View = view;
+			this.Ship = shipCtrl;
 			this.Size = size;
-			_view.RepeatFire (this.Fire, SHOT_PERIOD [size]);
-			_shipCtrl.DestroyedEvent += this.ShipDestroyed;
-			_view.HitEvent += this.Destroyed;
-			_view.GoneEvent += this.Gone;
+			this.View.RepeatFire (this.Fire, SHOT_PERIOD [size]);
+			this.Ship.DestroyedEvent += this.ShipDestroyed;
+			this.View.HitEvent += this.Destroyed;
+			this.View.GoneEvent += this.Gone;
 		}
 
 		#endregion
@@ -67,11 +79,11 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			if (_shipCtrl.IsActive) {
+			if (this.Ship.IsActive) {
 				if (this.Size == BIG_SAUCER) {
-					_view.Fire (Random.Range (0, 360));
+					this.View.Fire (Random.Range (0, 360));
 				} else {
-					_view.Fire (
+					this.View.Fire (
 						this.DistortShotAngle (this.GetShotAngleSimple ())
 					);
 				}
@@ -80,21 +92,21 @@ namespace CgfGames
 
 		public void ShipDestroyed ()
 		{
-			_view.ShipDestroyed ();
+			this.View.ShipDestroyed ();
 		}
 
 		public void Destroyed ()
 		{
-			_shipCtrl.DestroyedEvent -= this.ShipDestroyed;
+			this.Ship.DestroyedEvent -= this.ShipDestroyed;
 			if (this.DestroyedEvent != null) {
 				this.DestroyedEvent (this);
 			}
-			_view.Destroyed ();
+			this.View.Destroyed ();
 		}
 
 		public void Gone ()
 		{
-			_shipCtrl.DestroyedEvent -= this.ShipDestroyed;
+			this.Ship.DestroyedEvent -= this.ShipDestroyed;
 			if (this.GoneEvent != null) {
 				this.GoneEvent (this);
 			}
@@ -106,8 +118,9 @@ namespace CgfGames
 		//======================================================================
 
 		private float DistortShotAngle (float angle) {
-			float maxDistortion = MAX_SHOT_ANGLE_DISTORTION *
-				Mathf.Max ((1f -  1f * _gameState.Score / ACCURACY_LIMIT_POINTS), 0);
+			float maxDistortion = MAX_SHOT_ANGLE_DISTORTION * Mathf.Max (
+				(1f -  1f * this.GameState.Score / ACCURACY_LIMIT_POINTS), 0
+			);
 			float randomDistortion = Random.value * maxDistortion;
 			float randomSign = Random.Range (0, 2) * 2 - 1;
 			return angle + randomDistortion * randomSign;
@@ -115,7 +128,7 @@ namespace CgfGames
 
 		private float GetShotAngleSimple ()
 		{
-			Vector2 dir = _shipCtrl.Pos - _view.Pos;
+			Vector2 dir = this.Ship.Pos - this.View.Pos;
 			return Vector2.Angle (Vector2.right, dir) * Mathf.Sign (dir.y);
 		}
 
@@ -125,21 +138,21 @@ namespace CgfGames
 			float w = SpaceObjectMngr.width;
 			float targetX;
 			float targetY;
-			if (Mathf.Abs (_shipCtrl.Pos.x - _view.Pos.x) < w / 2) {
-				targetX = _shipCtrl.Pos.x;
-			} else if (_view.Pos.x > 0) {
-				targetX = _shipCtrl.Pos.x + w;
+			if (Mathf.Abs (this.Ship.Pos.x - this.View.Pos.x) < w / 2) {
+				targetX = this.Ship.Pos.x;
+			} else if (this.View.Pos.x > 0) {
+				targetX = this.Ship.Pos.x + w;
 			} else {
-				targetX = _shipCtrl.Pos.x - w;
+				targetX = this.Ship.Pos.x - w;
 			}
-			if (Mathf.Abs (_shipCtrl.Pos.y - _view.Pos.y) < h / 2) {
-				targetY = _shipCtrl.Pos.y;
-			} else if (_view.Pos.y > 0) {
-				targetY = _shipCtrl.Pos.y + h;
+			if (Mathf.Abs (this.Ship.Pos.y - this.View.Pos.y) < h / 2) {
+				targetY = this.Ship.Pos.y;
+			} else if (this.View.Pos.y > 0) {
+				targetY = this.Ship.Pos.y + h;
 			} else {
-				targetY = _shipCtrl.Pos.y - h;
+				targetY = this.Ship.Pos.y - h;
 			}
-			Vector2 dir = new Vector2 (targetX, targetY) - _view.Pos;
+			Vector2 dir = new Vector2 (targetX, targetY) - this.View.Pos;
 			return Vector2.Angle (Vector2.right, dir) * Mathf.Sign (dir.y);
 		}
 
