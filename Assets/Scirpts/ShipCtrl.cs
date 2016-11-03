@@ -19,6 +19,8 @@ namespace CgfGames
 
 		void Fire ();
 
+		void FireHeld ();
+
 		void Rotate (float direction);
 
 		void Thrust ();
@@ -33,6 +35,14 @@ namespace CgfGames
 	[Serializable]
 	public class ShipCtrl : IShipCtrl
 	{
+		#region Constants
+		//======================================================================
+
+		float BLUE_SHOT_TIME = 0.1f;
+		float RED_RAY_TIME = 0.3f;
+
+		#endregion
+
 		#region Public fields
 		//======================================================================
 
@@ -59,6 +69,7 @@ namespace CgfGames
 		//======================================================================
 	
 		private IWeaponCtrl[] _weapons;
+		private IWeaponCtrl _baseWeapon;
 
 		#endregion
 
@@ -67,27 +78,50 @@ namespace CgfGames
 
 		public ShipCtrl (IShipView view)
 		{
-			this.View = view as ShipView;
+			this.View = view;
 			this.IsAlive = true;
 			this.IsActive = true;
 			this.View.HitEvent += this.Destroyed;
 			this.View.NewWeaponEvent += this.Equip;
 
 			_weapons = new IWeaponCtrl [Enum.GetNames (typeof(WeaponType)).Length];
-			_weapons [(int)WeaponType.BASE] =  new InfiniteWeaponCtrl (
+			_weapons [(int)WeaponType.BASE] =  new WeaponCtrl (
 				this.View.GetWeapon (WeaponType.BASE)
 			);
-			_weapons [(int)WeaponType.BLUE] =  new AmmoWeaponCtrl (
-				this.View.GetWeapon (WeaponType.BLUE)
+			_weapons [(int)WeaponType.BLUE] =  new TimedWeaponCtrl (
+				BLUE_SHOT_TIME,
+				BLUE_SHOT_TIME,
+				new AmmoWeaponCtrl (
+					new WeaponCtrl (
+						this.View.GetWeapon (WeaponType.BLUE)
+					)
+				)
 			);
-			_weapons [(int)WeaponType.YELLOW] =  new InfiniteWeaponCtrl (
-				this.View.GetWeapon (WeaponType.YELLOW)
+			_weapons [(int)WeaponType.YELLOW] =  new AmmoWeaponCtrl (
+				new WeaponCtrl (
+					this.View.GetWeapon (WeaponType.YELLOW)
+				)
 			);
-			_weapons [(int)WeaponType.RED] =  new AmmoWeaponCtrl (
-				this.View.GetWeapon (WeaponType.RED)
+			_weapons [(int)WeaponType.RED] =  new TimedWeaponCtrl (
+				RED_RAY_TIME,
+				RED_RAY_TIME,
+				new AmmoWeaponCtrl (
+					new WeaponCtrl (
+						this.View.GetWeapon (WeaponType.RED)
+					)
+				)
 			);
 
-			this.CurrentWeapon = _weapons [(int)WeaponType.YELLOW];
+			_baseWeapon = _weapons [(int)WeaponType.BASE];
+//			_baseWeapon =  new TimedWeaponCtrl (
+//				0.2f,
+//				0.2f,
+//				new WeaponCtrl (
+//					this.View.GetWeapon (WeaponType.YELLOW)
+//				)
+//			);
+
+			this.CurrentWeapon = _baseWeapon;
 			this.CurrentWeapon.Equip ();
 		}
 
@@ -110,11 +144,22 @@ namespace CgfGames
 		{
 			if (this.IsActive) {
 				if (!this.CurrentWeapon.IsAvailable) {
-					this.CurrentWeapon = _weapons[(int)WeaponType.BASE];
+					this.CurrentWeapon = _baseWeapon;
 				}
 				this.CurrentWeapon.Fire ();
 			}
 		}
+
+		public void FireHeld ()
+		{
+			if (this.IsActive) {
+				if (!this.CurrentWeapon.IsAvailable) {
+					this.CurrentWeapon = _baseWeapon;
+				}
+				this.CurrentWeapon.FireHeld ();
+			}
+		}
+
 
 		public void Rotate (float direction)
 		{
@@ -147,6 +192,7 @@ namespace CgfGames
 		{
 			this.IsAlive = false;
 			this.IsActive = false;
+			this.CurrentWeapon = _baseWeapon;
 			this.View.Destroyed ();
 			if (this.DestroyedEvent != null) {
 				this.DestroyedEvent ();

@@ -48,6 +48,11 @@ namespace CgfGames
 			}
 		}
 
+		public void FireHeld ()
+		{
+			this.Fire ();
+		}
+
 		public void Reload (int amount)
 		{
 		}

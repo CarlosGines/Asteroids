@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace CgfGames
 {		
-	public abstract class WeaponCtrl : IWeaponCtrl {
+	public class WeaponCtrl : IWeaponCtrl {
 
 		#region Public fields & properties
 		//======================================================================
@@ -12,7 +11,7 @@ namespace CgfGames
 
 		public WeaponType Type { get { return this.View.Type; } }
 		
-		public abstract bool IsAvailable { get; }
+		public bool IsAvailable { get { return true; } }
 
 		#endregion
 
@@ -29,22 +28,27 @@ namespace CgfGames
 		#region IWeapoCtrl Public methods
 		//======================================================================
 
-		public virtual void Equip ()
+		public void Equip ()
 		{
 			this.View.Equip ();
 		}
 
-		public virtual void Unequip ()
+		public void Unequip ()
 		{
 			this.View.Unequip ();
 		}
 
-		public virtual void Fire ()
+		public void Fire ()
 		{
 			this.View.Fire ();
 		}
 
-		public virtual void Reload (int amount)
+		public void FireHeld ()
+		{
+			this.View.FireHeld ();
+		}
+
+		public void Reload (int amount)
 		{
 			this.View.Reload (amount);
 		}

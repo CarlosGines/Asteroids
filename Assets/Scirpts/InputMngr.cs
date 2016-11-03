@@ -11,6 +11,8 @@ namespace CgfGames
 		{
 			if (Input.GetButtonDown ("Fire")) {
 				ship.Fire ();
+			} else if (Input.GetButton ("Fire")) {
+				ship.FireHeld ();
 			}
 			if (Input.GetButtonDown ("Teleport")) {
 				ship.Teleport ();

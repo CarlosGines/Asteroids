@@ -43,7 +43,7 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 
-		public AsteroidView View;
+		public IAsteroidView View;
 
 		#endregion
 
@@ -52,7 +52,7 @@ namespace CgfGames
 
 		public AsteroidCtrl (IAsteroidView view, int size)
 		{
-			this.View = view as AsteroidView;
+			this.View = view ;
 			this.Size = size;
 			this.View.HitEvent += this.Destroyed;
 		}
@@ -64,15 +64,15 @@ namespace CgfGames
 
 		public void Destroyed ()
  		{
-			List<IAsteroidCtrl> asteroidCtrlList = null;
+			List<IAsteroidCtrl> asteroidList = null;
 			if (this.Size == MAX_SIZE) {
 				this.View.TrySpawnPowerup ();
 			}
 			if (this.Size > 0) {
-				asteroidCtrlList = this.SpawnChildren ();
+				asteroidList = this.SpawnChildren ();
 			}
 			if (DestroyedEvent != null) {
-				this.DestroyedEvent (this, asteroidCtrlList);
+				this.DestroyedEvent (this, asteroidList);
 			}
 			this.View.Destroyed ();
 			this.View.HitEvent -= this.Destroyed;
@@ -80,11 +80,17 @@ namespace CgfGames
 
 		private List<IAsteroidCtrl> SpawnChildren ()
 		{
+			List<IAsteroidCtrl> asteroidList = new List<IAsteroidCtrl> ();
 			int childSize = this.Size - 1;
-			return this.View.SpawnChildren (childSize)
-				.Select ((view) => 
-					new AsteroidCtrl (view, childSize) as IAsteroidCtrl)
-				.ToList ();
+			for (int i = 0; i < 2; i++) {
+				asteroidList.Add (
+					new AsteroidCtrl (
+						this.View.SpawnChild (i, childSize),
+						childSize
+					)
+				);
+			}
+			return asteroidList;
 		}
 
 		#endregion

@@ -10,12 +10,13 @@ namespace CgfGames
 	{
 		event Action HitEvent;
 
-		void Init (int size, Vector3 pos, Quaternion rot, ObjectPool asteroidPool,
-           ObjectPool powerupPool);
+		void Init (int size, ObjectPool asteroidPool, ObjectPool powerupPool);
 
 		void Destroyed ();
 
-		List<IAsteroidView> SpawnChildren (int size);
+		IAsteroidView SpawnChild (int childNum, int size);
+
+		void TrySpawnPowerup ();
 	}
 
 	[RequireComponent (typeof (SpaceObjectMngr))]
@@ -79,11 +80,9 @@ namespace CgfGames
 		#region Public methods
 		//======================================================================
 
-		public void Init (int size, Vector3 pos, Quaternion rot,
-			ObjectPool asteroidPool, ObjectPool powerupPool)
+		public void Init (int size, ObjectPool asteroidPool,
+			ObjectPool powerupPool)
 		{
-			this.trans.position = pos;
-			this.trans.rotation = rot;
 			this.trans.localScale = Vector3.one * 1.6f *
 				(int)Math.Pow (2, size);
 			this.asteroidPool = asteroidPool;
@@ -96,27 +95,22 @@ namespace CgfGames
 			gameObject.SetActive (false);
 		}
 
-		public List<IAsteroidView> SpawnChildren (int childSize)
+		public IAsteroidView SpawnChild (int childNum, int childSize)
 		{
-			List<IAsteroidView> asteroidViewList = new List<IAsteroidView> ();
-			float startAngle = -CHILDREN_DELTA_ANGLE * (NUM_CHILDREN - 1) / 2;
-			Quaternion childRot = Quaternion.Euler (0, 0, startAngle) *
+			float angle = CHILDREN_DELTA_ANGLE / 2 * 
+				Math.Sign (childNum - 0.5f);
+			Quaternion rot = Quaternion.Euler (0, 0, angle) *
             	this.trans.rotation;
-			for (int i = 0; i < NUM_CHILDREN; i++) {
-				IAsteroidView asteroiView = asteroidPool.Get ()
-					.GetComponent<AsteroidView> ();
-				asteroiView.Init (
-					childSize,
-					this.trans.position,
-					childRot,
-					this.asteroidPool,
-					this.powerupPool
-				);
-				asteroidViewList.Add (asteroiView);
-				childRot = Quaternion.Euler (0, 0, CHILDREN_DELTA_ANGLE) *
-					childRot;
-			}
-			return asteroidViewList;
+			Debug.Log ("Dame asteroide child size " + childSize);
+			IAsteroidView asteroiView = asteroidPool
+				.Get (this.trans.position, rot)
+				.GetComponent<AsteroidView> ();
+			asteroiView.Init (
+				childSize,
+				this.asteroidPool,
+				this.powerupPool
+			);
+			return asteroiView;
 		}
 
 		public void TrySpawnPowerup ()

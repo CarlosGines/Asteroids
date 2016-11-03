@@ -62,6 +62,11 @@ namespace CgfGames
 			shotGobj.tag = SHIP_SHOT_TAG;
 		}
 
+		public void FireHeld ()
+		{
+			// No-op.
+		}
+
 		public void Reload (int amount)
 		{
 		}

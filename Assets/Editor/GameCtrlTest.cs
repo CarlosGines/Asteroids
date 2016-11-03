@@ -141,5 +141,83 @@ namespace CgfGames
 		}
 
 		//======================================================================
+
+		[Test]
+		public void CanSpawnAsteroidsWithNewLevel ()
+		{
+			var gameView = Substitute.For<IGameView> ();
+			gameView.LevelFinished (Arg.Invoke ());
+			GameCtrl game = new GameCtrl (
+				gameView, Substitute.For<IShipCtrl> ()
+			);
+
+			game.StartGame ();
+
+			Assert.AreEqual (game.GameState.Level, 1);
+			Assert.AreEqual (game.AsteroidList.Count, 4);
+
+			for (int i = 0; i < this.TotalAsteroids(1); i++) {
+				game.AsteroidList [0].Destroyed ();
+			}
+
+			Assert.AreEqual (game.GameState.Level, 2);
+			Assert.AreEqual (game.AsteroidList.Count, 5);
+		}
+
+		private int TotalAsteroids (int level)
+		{
+			int init = level + 3;
+			return init + init * 2 + init * 2 * 2;
+		}
+
+		//======================================================================
+
+		[Test]
+		public void CannnotFinishLevelWithSaucerAlive ()
+		{
+			var gameView = Substitute.For<IGameView> ();
+			gameView.LevelFinished (Arg.Invoke ());
+			GameCtrl game = new GameCtrl (
+				gameView, Substitute.For<IShipCtrl> ()
+			);
+
+			game.StartGame ();
+
+			Assert.AreEqual (game.GameState.Level, 1);
+
+			game.SpawnSaucer ();
+
+			for (int i = 0; i < this.TotalAsteroids(1); i++) {
+				game.AsteroidList [0].Destroyed ();
+			}
+
+			Assert.AreEqual (game.GameState.Level, 1);
+		}
+
+		//======================================================================
+
+		[Test]
+		public void CanFinishLevelAfterSaucerDead ()
+		{
+			var gameView = Substitute.For<IGameView> ();
+			gameView.LevelFinished (Arg.Invoke ());
+			GameCtrl game = new GameCtrl (
+				gameView, Substitute.For<IShipCtrl> ()
+			);
+
+			game.StartGame ();
+
+			Assert.AreEqual (game.GameState.Level, 1);
+
+			game.SpawnSaucer ();
+			for (int i = 0; i < this.TotalAsteroids(1); i++) {
+				game.AsteroidList [0].Destroyed ();
+			}
+			game.Saucer.Destroyed ();
+
+			Assert.AreEqual (game.GameState.Level, 2);
+		}
+
+		//======================================================================
 	}
 }

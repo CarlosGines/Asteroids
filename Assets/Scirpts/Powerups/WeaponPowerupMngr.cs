@@ -51,12 +51,15 @@ namespace CgfGames
 			this.type = type;
 			switch (this.type) {
 			case WeaponType.BLUE:
+				this.ammo = 50;
 				this.rend.color = Color.blue;
 				break;
 			case WeaponType.YELLOW:
+				this.ammo = 5;
 				this.rend.color = Color.yellow;
 				break;
 			case WeaponType.RED:
+				this.ammo = 15;
 				this.rend.color = Color.red;
 				break;
 			}

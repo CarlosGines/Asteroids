@@ -3,45 +3,37 @@ using System.Collections;
 
 namespace CgfGames
 {
-	public class RedWeaponView : MonoBehaviour, IWeaponView {
-
-		#region Constants
-		//======================================================================
-
-		private const string SHIP_SHOT_TAG = "ShipShot";
-
-		#endregion 
-
+	public class RedWeaponView : MonoBehaviour, IWeaponView
+	{
 		#region Public fields and properties
 		//======================================================================
 
 		public WeaponType Type { get { return WeaponType.RED; } }
+
+		public float rayShotTime;
 
 		#endregion
 
 		#region External references
 		//======================================================================
 
-		public ObjectPool shotPool;
-		public Transform[] cannons;
-
-		#endregion
-
-		#region Cached components
-		//======================================================================
-
-		private Transform _trans;
+		public GameObject ray;
 
 		#endregion
 
 		#region Unity callbacks
 		//======================================================================
 
-		void Awake ()
+		void OnEnable ()
 		{
-			_trans = transform;
+			ray.SetActive (false);
 		}
-			
+
+		void OnDisable ()
+		{
+			StopAllCoroutines ();
+		}
+
 		#endregion
 
 		#region IWeaponView Public methods
@@ -57,12 +49,20 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			for (int i = 0; i < cannons.Length; i++) {
-				GameObject shotGobj = this.shotPool.Get (
-					cannons[i].position, cannons[i].rotation
-				);
-				shotGobj.tag = SHIP_SHOT_TAG;
-			}
+			ray.SetActive (true);
+			StopAllCoroutines ();
+			StartCoroutine (this.RayOff ());
+		}
+
+		public void FireHeld ()
+		{
+			this.Fire ();
+		}
+
+		private IEnumerator RayOff ()
+		{
+			yield return new WaitForSeconds (rayShotTime);
+			ray.SetActive (false);
 		}
 
 		public void Reload (int amount)

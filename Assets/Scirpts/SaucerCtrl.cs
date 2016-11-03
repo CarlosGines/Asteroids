@@ -41,11 +41,12 @@ namespace CgfGames
 		#region Public fields & properties
 		//======================================================================
 
+		public ISaucerView View { get; private set; }
+
 		public int Size { get; private set; }
 
 		public GameState GameState { get; private set; }
-		public SaucerView View { get; private set; }
-		public ShipCtrl Ship { get; private set; }
+		public IShipCtrl Ship { get; private set; }
 
 		#endregion
 
@@ -64,8 +65,8 @@ namespace CgfGames
 				IShipCtrl ship, int size)
 		{
 			this.GameState = gameState;
-			this.View = view as SaucerView;
-			this.Ship = ship as ShipCtrl;
+			this.View = view;
+			this.Ship = ship;
 			this.Size = size;
 			this.View.RepeatFire (this.Fire, SHOT_PERIOD [size]);
 			this.Ship.DestroyedEvent += this.ShipDestroyed;
@@ -98,7 +99,7 @@ namespace CgfGames
 
 		public void Destroyed ()
 		{
-			this.Ship.DestroyedEvent -= this.ShipDestroyed;
+			this.CleanUpEventHandlers ();
 			if (this.DestroyedEvent != null) {
 				this.DestroyedEvent (this);
 			}
@@ -107,7 +108,7 @@ namespace CgfGames
 
 		public void Gone ()
 		{
-			this.Ship.DestroyedEvent -= this.ShipDestroyed;
+			this.CleanUpEventHandlers ();
 			if (this.GoneEvent != null) {
 				this.GoneEvent (this);
 			}
@@ -155,6 +156,13 @@ namespace CgfGames
 			}
 			Vector2 dir = new Vector2 (targetX, targetY) - this.View.Pos;
 			return Vector2.Angle (Vector2.right, dir) * Mathf.Sign (dir.y);
+		}
+
+		private void CleanUpEventHandlers ()
+		{
+			this.Ship.DestroyedEvent -= this.ShipDestroyed;
+			this.View.HitEvent -= this.Destroyed;
+			this.View.GoneEvent -= this.Gone;
 		}
 
 		#endregion

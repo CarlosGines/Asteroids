@@ -54,6 +54,13 @@ namespace CgfGames
 
 		#endregion
 
+		#region Private fields
+		//======================================================================
+
+		private IEnumerator _waitToSpawnSaucerRoutine;
+
+		#endregion
+
 		#region IGameView Public methods
 		//======================================================================
 
@@ -70,11 +77,14 @@ namespace CgfGames
 		
 		public IAsteroidView SpawnAsteroid ()
 		{				
-			AsteroidView asteroidView = this.asteroidsPool.Get ().GetComponent<AsteroidView> ();
+			Debug.Log ("Dame asteroide pare");
+			AsteroidView asteroidView = this.asteroidsPool
+				.Get (
+					SpaceObjectMngr.RandomPos (),
+					Quaternion.Euler (0, 0, Random.value * 360)
+				).GetComponent<AsteroidView> ();
 			asteroidView.Init (
 				AsteroidCtrl.MAX_SIZE,
-				SpaceObjectMngr.RandomPos (),
-				Quaternion.Euler (0, 0, Random.value * 360),
 				this.asteroidsPool,
 				this.powerupPool
 			);
@@ -83,10 +93,13 @@ namespace CgfGames
 
 		public void WaitToSpawnSaucer (Action spawnSacucer)
 		{
-			StartCoroutine ("WaitAndSpawnSaucer2", spawnSacucer);
+			if (_waitToSpawnSaucerRoutine == null) {
+				_waitToSpawnSaucerRoutine = WaitToSpawnSaucer2 (spawnSacucer);
+				StartCoroutine (_waitToSpawnSaucerRoutine);
+			}
 		}
 
-		private IEnumerator WaitAndSpawnSaucer2 (Action spawnSacucer)
+		private IEnumerator WaitToSpawnSaucer2 (Action spawnSacucer)
 		{
 			yield return new WaitForSeconds (
 				SPAWN_SAUCER_MIN_TIME + Random.value * (
@@ -94,6 +107,7 @@ namespace CgfGames
 				)
 			);
 			spawnSacucer ();
+			_waitToSpawnSaucerRoutine = null;
 		}
 
 		public ISaucerView SpawnSaucer (int size)
@@ -105,7 +119,10 @@ namespace CgfGames
 		
 		public void CancelSpawnSaucer ()
 		{
-			StopCoroutine ("WaitAndSpawnSaucer2");
+			if (_waitToSpawnSaucerRoutine != null) {
+				StopCoroutine (_waitToSpawnSaucerRoutine);
+				_waitToSpawnSaucerRoutine = null;
+			}
 		}
 
 		public void LevelFinished (Action onComplete)

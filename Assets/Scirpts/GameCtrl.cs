@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using Random = UnityEngine.Random;
 
@@ -18,16 +17,16 @@ namespace CgfGames
 
 		IAsteroidCtrl SpawnAsteroid ();
 
-		void AsteroidDestroyed (IAsteroidCtrl asteroidCtrl, 
-            List<IAsteroidCtrl> childAsteroidCtrls);
+		void AsteroidDestroyed (IAsteroidCtrl asteroid, 
+            List<IAsteroidCtrl> childAsteroids);
 
 		void SpawnSaucer ();
 
 		void SpawnSaucer (int size);
 
-		void SaucerDestroyed (ISaucerCtrl saucerCtrl);
+		void SaucerDestroyed (ISaucerCtrl saucer);
 
-		void SaucerGone (ISaucerCtrl saucerCtrl);
+		void SaucerGone (ISaucerCtrl saucer);
 
 		void ScoreUpdated (int oldScore, int score);
 
@@ -58,10 +57,10 @@ namespace CgfGames
 		public GameState GameState {
 			get { return _gameState; } private set { _gameState = value; }
 		}
-		public GameView View { get; private set; }
-		public ShipCtrl Ship { get; private set; }
-		public SaucerCtrl Saucer { get; private set; } 
-		public List<AsteroidCtrl> AsteroidList { get; private set; }
+		public IGameView View { get; private set; }
+		public IShipCtrl Ship { get; private set; }
+		public ISaucerCtrl Saucer { get; private set; } 
+		public List<IAsteroidCtrl> AsteroidList { get; private set; }
 
 		#endregion
 
@@ -75,10 +74,10 @@ namespace CgfGames
 
 		public GameCtrl (GameState gameState, IGameView view, IShipCtrl ship)
 		{
-			this.View = view as GameView;
+			this.View = view;
 			this.GameState = gameState;
-			this.Ship = ship as ShipCtrl;
-			this.AsteroidList = new List<AsteroidCtrl> ();
+			this.Ship = ship;
+			this.AsteroidList = new List<IAsteroidCtrl> ();
 			this.GameState.ScoreUpdatedEvent += this.ScoreUpdated;
 			this.GameState.LivesUpdatedEvent += this.View.UpdateLives;
 			this.Ship.DestroyedEvent += this.ShipDestroyed;
@@ -99,7 +98,9 @@ namespace CgfGames
 		public void StartLevel ()
 		{
 			this.GameState.Level++;
-			for (int i = 0; i < this.GameState.Level + 3 ; i++) {
+			int numAsteroids = this.GameState.Level + 3;
+//			Debug.Log (string.Format ("Nivel {0}. Vamos a Spawnear {1} asteroides", this.GameState.Level, numAsteroids));
+			for (int i = 0; i < numAsteroids ; i++) {
 				this.SpawnAsteroid ();
 			}
 			this.View.WaitToSpawnSaucer(this.SpawnSaucer);
@@ -118,27 +119,25 @@ namespace CgfGames
 
 		public IAsteroidCtrl SpawnAsteroid ()
 		{
-			AsteroidCtrl asteroidCtrl = new AsteroidCtrl (
+			AsteroidCtrl asteroid = new AsteroidCtrl (
 				this.View.SpawnAsteroid (), AsteroidCtrl.MAX_SIZE
 			);
-			this.AsteroidList.Add (asteroidCtrl);
-			asteroidCtrl.DestroyedEvent += AsteroidDestroyed;
-			return asteroidCtrl;
+			this.AsteroidList.Add (asteroid);
+			asteroid.DestroyedEvent += AsteroidDestroyed;
+			return asteroid;
 		}
 
-		public void AsteroidDestroyed (IAsteroidCtrl asteroidCtrl,
-			List<IAsteroidCtrl> childAsteroidCtrls)
+		public void AsteroidDestroyed (IAsteroidCtrl asteroid,
+			List<IAsteroidCtrl> childAsteroids)
 		{
-			this.GameState.Score += ASTEROIDS_POINTS[asteroidCtrl.Size];
-			if (childAsteroidCtrls != null) {
-				this.AsteroidList.AddRange (
-					childAsteroidCtrls.Cast<AsteroidCtrl> ().ToList ()
-				);
-				foreach (AsteroidCtrl ac in childAsteroidCtrls) {
+			this.GameState.Score += ASTEROIDS_POINTS[asteroid.Size];
+			if (childAsteroids != null) {
+				this.AsteroidList.AddRange (childAsteroids);
+				foreach (AsteroidCtrl ac in childAsteroids) {
 					ac.DestroyedEvent += this.AsteroidDestroyed;
 				}
 			}
-			this.AsteroidList.Remove (asteroidCtrl as AsteroidCtrl);
+			this.AsteroidList.Remove (asteroid as AsteroidCtrl);
 			this.CheckLevelFinished ();
 		}
 
@@ -156,15 +155,15 @@ namespace CgfGames
 			this.Saucer.GoneEvent += SaucerGone;
 		}
 
-		public void SaucerDestroyed (ISaucerCtrl saucerCtrl)
+		public void SaucerDestroyed (ISaucerCtrl saucer)
 		{
-			this.GameState.Score += SAUCERS_POINTS [saucerCtrl.Size];
+			this.GameState.Score += SAUCERS_POINTS [saucer.Size];
 			this.Saucer = null;
 			this.View.WaitToSpawnSaucer(this.SpawnSaucer);
 			this.CheckLevelFinished ();
 		}
 
-		public void SaucerGone (ISaucerCtrl saucerCtrl)
+		public void SaucerGone (ISaucerCtrl saucer)
 		{
 			this.Saucer = null;
 			this.View.WaitToSpawnSaucer(this.SpawnSaucer);
@@ -181,6 +180,7 @@ namespace CgfGames
 
 		public void GameOver ()
 		{
+			Debug.Log ("Game over");
 			this.View.GameOver ();
 		}
 

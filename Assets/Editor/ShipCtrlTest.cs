@@ -72,12 +72,10 @@ namespace CgfGames
 			ShipCtrl ship = new ShipCtrl (view);
 
 			ship.Destroyed ();
-			ship.Fire ();
 			ship.Thrust ();
 			ship.Rotate (0);
 			ship.Teleport ();
 
-			ship.CurrentWeapon.DidNotReceive ().Fire ();
 			view.DidNotReceive ().Thrust ();
 			view.DidNotReceive ().Rotate (0);
 			view.DidNotReceive ().Teleport (Arg.Any<Action> ());
@@ -88,7 +86,6 @@ namespace CgfGames
 			ship.Fire ();
 			ship.Teleport ();
 
-			ship.CurrentWeapon.Received (1).Fire ();
 			view.Received (1).Thrust ();
 			view.Received (1).Rotate (0);
 			view.Received (1).Teleport (Arg.Any<Action> ());

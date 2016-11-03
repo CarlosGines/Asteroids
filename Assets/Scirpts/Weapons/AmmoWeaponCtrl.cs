@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace CgfGames
 {		
-	public class AmmoWeaponCtrl : WeaponCtrl {
+	public class AmmoWeaponCtrl : WeaponCtrlWrap {
 
 		#region Public fields & properties
 		//======================================================================
@@ -17,7 +17,7 @@ namespace CgfGames
 		#region Init
 		//======================================================================
 
-		public AmmoWeaponCtrl (IWeaponView view) : base (view)
+		public AmmoWeaponCtrl (IWeaponCtrl origin) : base (origin)
 		{
 		}
 
@@ -29,20 +29,28 @@ namespace CgfGames
 		public override void Unequip ()
 		{
 			this.Ammo = 0;
-			this.View.Unequip ();
+			this.origin.Unequip ();
 		}
 
 		public override void Reload (int amount)
 		{
 			this.Ammo += amount;
-			this.View.Reload (amount);
+			this.origin.Reload (amount);
 		}
 
 		public override void Fire ()
 		{
 			if (this.Ammo > 0) {
 				this.Ammo--;
-				this.View.Fire ();
+				this.origin.Fire ();
+			}
+		}
+
+		public override void FireHeld ()
+		{
+			if (this.Ammo > 0) {
+				this.Ammo--;
+				this.origin.FireHeld ();
 			}
 		}
 
