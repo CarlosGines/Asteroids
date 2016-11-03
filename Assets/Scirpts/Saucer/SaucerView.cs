@@ -56,6 +56,7 @@ namespace CgfGames
 		//======================================================================
 
 		public ShotMngr saucerShot;
+		public ParticleSystem explosionPs;
 
 		#endregion
 
@@ -155,6 +156,8 @@ namespace CgfGames
 
 		public void Destroyed ()
 		{
+			explosionPs.transform.position = this.trans.position;
+			explosionPs.Play ();
 			gameObject.SetActive (false);
 		}
 

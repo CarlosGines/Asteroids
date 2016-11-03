@@ -60,6 +60,8 @@ namespace CgfGames
 		public YellowWeaponView yellowWeaponView;
 		public RedWeaponView redWeaponView;
 
+		public ParticleSystem explosionPs;
+
 		#endregion
 
 
@@ -133,30 +135,28 @@ namespace CgfGames
 
 		private IEnumerator Teleport2 (Action teleportDone)
 		{
-			this.rb.Sleep ();
-			this.rend.enabled = false;
-			this.col.enabled = false;
+			this.SetActiveSoft (false);
 			yield return new WaitForSeconds (TELEPORT_TIME);
 			this.trans.position = SpaceObjectMngr.RandomPos ();
-			this.rend.enabled = true;
-			this.col.enabled = true;
+			this.SetActiveSoft (true);
 			teleportDone.Invoke ();
 		}
 
 		public void Destroyed ()
 		{
-			gameObject.SetActive (false);
+			this.SetActiveSoft (false);
+			explosionPs.Play ();
 		}
 
 		public void Respawn ()
 		{
 			this.trans.position = Vector3.zero;
-			gameObject.SetActive (true);
+			this.SetActiveSoft (true);
 		}
 
 		#endregion
 
-		#region Public methods
+		#region Custom public methods
 		//======================================================================
 
 		public void NewWeapon (WeaponType type, int ammo)
@@ -164,6 +164,23 @@ namespace CgfGames
 			if (this.NewWeaponEvent != null)
 			{
 				this.NewWeaponEvent (type, ammo);
+			}
+		}
+
+		#endregion
+
+		#region Private methods
+		//======================================================================
+
+		public void SetActiveSoft (bool active)
+		{
+			if (active) {
+				this.rend.enabled = true;
+				this.col.enabled = true;
+			} else {
+				this.rb.Sleep ();
+				this.rend.enabled = false;
+				this.col.enabled = false;
 			}
 		}
 

@@ -10,7 +10,8 @@ namespace CgfGames
 	{
 		event Action HitEvent;
 
-		void Init (int size, ObjectPool asteroidPool, ObjectPool powerupPool);
+		void Init (int size, ObjectPool asteroidPool, ObjectPool powerupPool,
+			ObjectPool explosionPool);
 
 		void Destroyed ();
 
@@ -45,6 +46,7 @@ namespace CgfGames
 
 		public ObjectPool asteroidPool;
 		public ObjectPool powerupPool;
+		public ObjectPool explosionPool;
 
 		#endregion
 
@@ -81,18 +83,20 @@ namespace CgfGames
 		//======================================================================
 
 		public void Init (int size, ObjectPool asteroidPool,
-			ObjectPool powerupPool)
+			ObjectPool powerupPool, ObjectPool explosionPool)
 		{
 			this.trans.localScale = Vector3.one * 0.4f *
 				(int)Math.Pow (2, size);
 			this.asteroidPool = asteroidPool;
 			this.powerupPool = powerupPool;
+			this.explosionPool = explosionPool;
 			this.speed = this.baseSpeed * (AsteroidCtrl.MAX_SIZE + 1 - size);
 		}
 
 		public void Destroyed ()
 		{
 			gameObject.SetActive (false);
+			explosionPool.Get (this.trans.position, Quaternion.identity);
 		}
 
 		public IAsteroidView SpawnChild (int childNum, int childSize)
@@ -101,14 +105,14 @@ namespace CgfGames
 				Math.Sign (childNum - 0.5f);
 			Quaternion rot = Quaternion.Euler (0, 0, angle) *
             	this.trans.rotation;
-			Debug.Log ("Dame asteroide child size " + childSize);
 			IAsteroidView asteroiView = asteroidPool
 				.Get (this.trans.position, rot)
 				.GetComponent<AsteroidView> ();
 			asteroiView.Init (
 				childSize,
 				this.asteroidPool,
-				this.powerupPool
+				this.powerupPool,
+				this.explosionPool
 			);
 			return asteroiView;
 		}
