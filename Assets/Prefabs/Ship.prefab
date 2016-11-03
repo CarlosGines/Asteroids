@@ -99,7 +99,7 @@ GameObject:
   - 4: {fileID: 4000010081101846}
   - 212: {fileID: 212000013789959228}
   - 50: {fileID: 50000010163304734}
-  - 58: {fileID: 58000011987128658}
+  - 60: {fileID: 60000011965170640}
   - 114: {fileID: 114000012506618766}
   - 114: {fileID: 114000010685866220}
   m_Layer: 0
@@ -375,8 +375,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58000011987128658
-CircleCollider2D:
+--- !u!60 &60000011965170640
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -387,8 +387,22 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.4
+  m_Points:
+    m_Paths:
+    - - {x: 0.059237003, y: -0.13716325}
+      - {x: 0.21495092, y: -0.13584551}
+      - {x: 0.4247405, y: -0.046231747}
+      - {x: 0.4261343, y: 0.042877257}
+      - {x: 0.21701908, y: 0.1343447}
+      - {x: 0.06205553, y: 0.13434476}
+      - {x: -0.16796875, y: 0.3515625}
+      - {x: -0.26550668, y: 0.48295438}
+      - {x: -0.33487192, y: 0.48295438}
+      - {x: -0.43123558, y: 0.17095333}
+      - {x: -0.43052444, y: -0.17524391}
+      - {x: -0.33717954, y: -0.48399693}
+      - {x: -0.26762325, y: -0.47942457}
+      - {x: -0.14453125, y: -0.34375}
 --- !u!61 &61000010595962516
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -468,7 +482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angSpeed: 360
-  thrustForce: 2
+  thrustForce: 3
   baseWeaponView: {fileID: 114000010985295546}
   blueWeaponView: {fileID: 114000010389430494}
   yellowWeaponView: {fileID: 114000012719568038}

@@ -56,10 +56,11 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			GameObject shotGobj = this.shotPool.Get (
+			ShotMngr shot = this.shotPool.Get (
 				_trans.position, _trans.rotation
-			);
-			shotGobj.tag = SHIP_SHOT_TAG;
+			).GetComponent<ShotMngr> ();
+			shot.Color = Color.white;
+			shot.tag = SHIP_SHOT_TAG;
 		}
 
 		public void FireHeld ()

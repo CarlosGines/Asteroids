@@ -83,7 +83,7 @@ namespace CgfGames
 		public void Init (int size, ObjectPool asteroidPool,
 			ObjectPool powerupPool)
 		{
-			this.trans.localScale = Vector3.one * 1.6f *
+			this.trans.localScale = Vector3.one * 0.4f *
 				(int)Math.Pow (2, size);
 			this.asteroidPool = asteroidPool;
 			this.powerupPool = powerupPool;

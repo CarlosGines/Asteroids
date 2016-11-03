@@ -9,6 +9,7 @@ namespace CgfGames
 		//======================================================================
 
 		private const string SHIP_SHOT_TAG = "ShipShot";
+		private static readonly Color BLUE = new Color (0, 114f / 255, 188f / 255);
 
 		#endregion 
 
@@ -41,10 +42,11 @@ namespace CgfGames
 		public void Fire ()
 		{
 			for (int i = 0; i < cannons.Length; i++) {
-				GameObject shotGobj = this.shotPool.Get (
+				ShotMngr shot = this.shotPool.Get (
 					cannons[i].position, cannons[i].rotation
-				);
-				shotGobj.tag = SHIP_SHOT_TAG;
+				).GetComponent<ShotMngr> ();
+				shot.Color = BLUE;
+				shot.tag = SHIP_SHOT_TAG;
 			}
 		}
 

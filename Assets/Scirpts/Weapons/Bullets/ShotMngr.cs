@@ -5,19 +5,26 @@ using System.Collections.Generic;
 namespace CgfGames
 {
 	[RequireComponent (typeof (SpaceObjectMngr))]
+	[RequireComponent (typeof (SpriteRenderer))]
 	public class ShotMngr : MonoBehaviour {
 
-		#region Public properties
+		#region Public properties & properties
 		//======================================================================
 
 		public float speed;
+
+		public Color Color { 
+			get { return rend.color; } 
+			set { rend.color = value; }
+		}
 
 		#endregion
 
 		#region Cached components
 		//======================================================================
 
-		public Transform trans;
+		private Transform trans;
+		private SpriteRenderer rend;
 
 		#endregion
 
@@ -27,6 +34,7 @@ namespace CgfGames
 		void Awake ()
 		{
 			trans = transform;
+			rend = GetComponent<SpriteRenderer> ();
 		}
 
 		void OnEnable ()

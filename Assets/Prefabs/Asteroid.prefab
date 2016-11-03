@@ -21,7 +21,7 @@ GameObject:
   - 4: {fileID: 4000013822041552}
   - 212: {fileID: 212000012559627642}
   - 50: {fileID: 50000010061690032}
-  - 58: {fileID: 58000011925588010}
+  - 58: {fileID: 58000013878688616}
   - 114: {fileID: 114000011511475338}
   - 114: {fileID: 114000012300698030}
   m_Layer: 0
@@ -30,7 +30,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4000013822041552
 Transform:
   m_ObjectHideFlags: 1
@@ -39,7 +39,7 @@ Transform:
   m_GameObject: {fileID: 1000012627283746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.87, y: 1.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.6, y: 1.6, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -61,7 +61,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58000011925588010
+--- !u!58 &58000013878688616
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -74,7 +74,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.46
 --- !u!114 &114000011511475338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -87,8 +87,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 1
-  translation: {x: 0, y: 0, z: 0}
+  speed: 0
   asteroidPool: {fileID: 0}
+  powerupPool: {fileID: 0}
   trans: {fileID: 0}
 --- !u!114 &114000012300698030
 MonoBehaviour:
@@ -130,7 +131,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 7eb8ba146558942caa26c9ab37e70fbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -8,13 +8,19 @@ namespace CgfGames
 		public float speed;
 		public WeaponType type;
 		public int ammo;
-		private Transform trans;
-		private SpriteRenderer rend;
+		public Sprite blueSprite;
+		public Sprite yellowSprite;
+		public Sprite redSprite;
+
+		private Transform _trans;
+		private SpriteRenderer _rend;
+
+		private Vector3 _dir;
 
 		void Awake ()
 		{
-			this.trans = transform;
-			this.rend = GetComponent<SpriteRenderer> ();
+			_trans = transform;
+			_rend = GetComponent<SpriteRenderer> ();
 		}
 
 		void OnEnable ()
@@ -30,7 +36,7 @@ namespace CgfGames
 
 		void Update ()
 		{
-			this.trans.Translate (this.speed * Time.deltaTime, 0, 0);
+			_trans.Translate (_dir  * this.speed * Time.deltaTime);
 		}
 
 		void OnTriggerEnter2D (Collider2D other)
@@ -47,22 +53,24 @@ namespace CgfGames
 		}
 
 		public void Init (WeaponType type)
-		{
+		{				
 			this.type = type;
 			switch (this.type) {
 			case WeaponType.BLUE:
 				this.ammo = 50;
-				this.rend.color = Color.blue;
+				_rend.sprite = blueSprite;
 				break;
 			case WeaponType.YELLOW:
 				this.ammo = 5;
-				this.rend.color = Color.yellow;
+				_rend.sprite = yellowSprite;
 				break;
 			case WeaponType.RED:
 				this.ammo = 15;
-				this.rend.color = Color.red;
+				_rend.sprite = redSprite;
 				break;
 			}
+			_dir = _trans.right;
+			_trans.rotation = Quaternion.identity;
 		}
 	}
 }

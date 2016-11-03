@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010352009246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.18, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalPosition: {x: 2.64, y: -0.01, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +74,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
 --- !u!114 &114000010384422746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,8 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.5
-  type: 1
+  type: 2
   ammo: 20
+  blueSprite: {fileID: 21300000, guid: e7720dce8755f42f189336bc90ae3065, type: 3}
+  yellowSprite: {fileID: 21300000, guid: 0bb9097d95d264b64b5681ac85a4db73, type: 3}
+  redSprite: {fileID: 21300000, guid: 40f701ac00b9f48f8a4393698887ee30, type: 3}
 --- !u!212 &212000012073804648
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -129,7 +132,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: e7720dce8755f42f189336bc90ae3065, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

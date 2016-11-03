@@ -97,9 +97,13 @@ namespace CgfGames
 					)
 				)
 			);
-			_weapons [(int)WeaponType.YELLOW] =  new AmmoWeaponCtrl (
-				new WeaponCtrl (
-					this.View.GetWeapon (WeaponType.YELLOW)
+			_weapons [(int)WeaponType.YELLOW] =  new TimedWeaponCtrl (
+				0,
+				0,
+				new AmmoWeaponCtrl (
+					new WeaponCtrl (
+						this.View.GetWeapon (WeaponType.YELLOW)
+					)
 				)
 			);
 			_weapons [(int)WeaponType.RED] =  new TimedWeaponCtrl (

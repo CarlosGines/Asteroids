@@ -19,10 +19,10 @@ namespace CgfGames
 		#region Cached components
 		//======================================================================
 
-		public Transform trans;
-		public CircleCollider2D col;
-		public SpriteRenderer rend;
-		public ParticleSystem ps;
+		private Transform _trans;
+		private CircleCollider2D _col;
+		private SpriteRenderer _rend;
+		private ParticleSystem _ps;
 
 		#endregion
 
@@ -41,12 +41,12 @@ namespace CgfGames
 
 		void Awake ()
 		{
-			this.trans = transform;
-			this.col = GetComponent <CircleCollider2D> (); 
-			this.rend = GetComponent <SpriteRenderer> (); 
-			this.ps = GetComponent <ParticleSystem> ();
+			this._trans = transform;
+			this._col = GetComponent <CircleCollider2D> (); 
+			this._rend = GetComponent <SpriteRenderer> (); 
+			this._ps = GetComponent <ParticleSystem> ();
 			_initSpeed = this.speed;
-			_initColRadius = this.col.radius;
+			_initColRadius = this._col.radius;
 		}
 
 		void OnEnable ()
@@ -64,7 +64,7 @@ namespace CgfGames
 
 		void Update ()
 		{
-			trans.Translate (speed * Time.deltaTime, 0, 0);
+			_trans.Translate (speed * Time.deltaTime, 0, 0);
 		}
 
 		void OnTriggerEnter2D (Collider2D other)
@@ -80,8 +80,8 @@ namespace CgfGames
 			StopAllCoroutines ();
 			_exploded = false;
 			this.speed =_initSpeed;
-			this.rend.enabled = true;
-			this.col.radius = _initColRadius;
+			this._rend.enabled = true;
+			this._col.radius = _initColRadius;
 		}
 
 		#endregion
@@ -93,10 +93,10 @@ namespace CgfGames
 		{
 			_exploded = true;
 			this.speed = 0;
-			this.rend.enabled = false;
-			this.col.radius = explosionRadius;
-			this.ps.Play ();
-			yield return new WaitForSeconds (ps.duration);
+			this._rend.enabled = false;
+			this._col.radius = explosionRadius;
+			this._ps.Play ();
+			yield return new WaitForSeconds (_ps.duration);
 			gameObject.SetActive (false);
 		}
 
