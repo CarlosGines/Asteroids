@@ -6,6 +6,7 @@ namespace CgfGames
 {
 	[RequireComponent (typeof (SpaceObjectMngr))]
 	[RequireComponent (typeof (SpriteRenderer))]
+	[RequireComponent (typeof (TrailRenderer))]
 	public class ShotMngr : MonoBehaviour {
 
 		#region Public properties & properties
@@ -14,8 +15,8 @@ namespace CgfGames
 		public float speed;
 
 		public Color Color { 
-			get { return rend.color; } 
-			set { rend.color = value; }
+			get { return _rend.color; } 
+			set { _rend.color = value; }
 		}
 
 		#endregion
@@ -23,8 +24,10 @@ namespace CgfGames
 		#region Cached components
 		//======================================================================
 
-		private Transform trans;
-		private SpriteRenderer rend;
+		[HideInInspector]
+		public Transform trans;
+		private SpriteRenderer _rend;
+		private TrailRenderer _tr;
 
 		#endregion
 
@@ -33,12 +36,15 @@ namespace CgfGames
 
 		void Awake ()
 		{
-			trans = transform;
-			rend = GetComponent<SpriteRenderer> ();
+			this.trans = transform;
+			_rend = GetComponent<SpriteRenderer> ();
+			_tr = GetComponent<TrailRenderer> ();
+			GetComponent <SpaceObjectMngr> ().OffScreenEvent += _tr.Clear;
 		}
 
 		void OnEnable ()
 		{
+			_tr.Clear ();
 			StartCoroutine (this.TimedDisable ());
 		}
 
@@ -50,7 +56,7 @@ namespace CgfGames
 
 		void Update ()
 		{
-			trans.Translate (speed * Time.deltaTime, 0, 0);
+			this.trans.Translate (this.speed * Time.deltaTime, 0, 0);
 		}
 
 		void OnTriggerEnter2D (Collider2D other)

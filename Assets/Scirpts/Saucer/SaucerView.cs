@@ -55,14 +55,15 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 
-		public ObjectPool shotPool;
+		public ShotMngr saucerShot;
 
 		#endregion
 
 		#region Cached components
 		//======================================================================
 
-		private Transform trans;
+		[HideInInspector]
+		public Transform trans;
 
 		#endregion
 
@@ -136,10 +137,9 @@ namespace CgfGames
 
 		public void Fire (float angle)
 		{
-			GameObject shotGobj = this.shotPool.Get (
-				trans.position, Quaternion.Euler (0, 0, angle)
-			);
-			shotGobj.tag = SAUCER_SHOT_TAG;
+			saucerShot.gameObject.SetActive (true);
+			saucerShot.trans.position = trans.position;
+			saucerShot.trans.rotation = Quaternion.Euler (0, 0, angle);
 		}
 
 		public void ShipDestroyed ()
