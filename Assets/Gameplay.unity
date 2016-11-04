@@ -129,17 +129,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010985295546, guid: 16ca49477a29648458e237807c3387a4,
-        type: 2}
-      propertyPath: shotPool
-      value: 
-      objectReference: {fileID: 379004335}
     - target: {fileID: 114000010389430494, guid: 16ca49477a29648458e237807c3387a4,
         type: 2}
       propertyPath: shotPool
       value: 
       objectReference: {fileID: 952114960}
     - target: {fileID: 114000010389430494, guid: 16ca49477a29648458e237807c3387a4,
+        type: 2}
+      propertyPath: ammoText
+      value: 
+      objectReference: {fileID: 1678141976}
+    - target: {fileID: 1000012609841232, guid: 16ca49477a29648458e237807c3387a4, type: 2}
+      propertyPath: m_Name
+      value: 'Ship '
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010725120620, guid: 16ca49477a29648458e237807c3387a4,
         type: 2}
       propertyPath: ammoText
       value: 
@@ -154,15 +158,11 @@ Prefab:
       propertyPath: ammoText
       value: 
       objectReference: {fileID: 1678141976}
-    - target: {fileID: 114000010725120620, guid: 16ca49477a29648458e237807c3387a4,
+    - target: {fileID: 114000010985295546, guid: 16ca49477a29648458e237807c3387a4,
         type: 2}
-      propertyPath: ammoText
+      propertyPath: shotPool
       value: 
-      objectReference: {fileID: 1678141976}
-    - target: {fileID: 1000012609841232, guid: 16ca49477a29648458e237807c3387a4, type: 2}
-      propertyPath: m_Name
-      value: 'Ship '
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 379004335}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16ca49477a29648458e237807c3387a4, type: 2}
   m_IsPrefabParent: 0

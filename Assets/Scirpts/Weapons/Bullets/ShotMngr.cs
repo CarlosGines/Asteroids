@@ -54,11 +54,11 @@ namespace CgfGames
 
 		void OnTriggerEnter2D (Collider2D other)
 		{
-			if (CompareTag ("ShipShot")) {
-				if (other.CompareTag ("Asteroid") || other.CompareTag ("Saucer")) {
+			if (CompareTag (Tags.SHIP_SHOT)) {
+				if (other.CompareTag (Tags.ASTEROID) || other.CompareTag (Tags.SAUCER)) {
 					gameObject.SetActive (false);
 				}
-			} else if (CompareTag ("SaucerShot") && other.CompareTag ("Ship")) {
+			} else if (CompareTag (Tags.SAUCER_SHOT) && other.CompareTag(Tags.SHIP)) {
 				gameObject.SetActive (false);
 			}
 		}

@@ -6,13 +6,6 @@ namespace CgfGames
 {
 	public class BaseWeaponView : MonoBehaviour, IWeaponView {
 
-		#region Constants
-		//======================================================================
-
-		private const string SHIP_SHOT_TAG = "ShipShot";
-
-		#endregion 
-
 		#region Public fields and properties
 		//======================================================================
 
@@ -53,6 +46,7 @@ namespace CgfGames
 
 		public void Equip ()
 		{
+			// No-op
 		}
 
 		public void Unequip ()
@@ -72,6 +66,7 @@ namespace CgfGames
 
 		public void Reload (int amount)
 		{
+			// No-op
 		}
 
 		#endregion

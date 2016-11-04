@@ -83,8 +83,8 @@ namespace CgfGames
 
 		void OnTriggerEnter2D (Collider2D other)
 		{
-			if (!_exploded && (other.CompareTag ("Asteroid") || 
-					other.CompareTag ("Saucer"))) {
+			if (!_exploded && (other.CompareTag (Tags.ASTEROID) || 
+					other.CompareTag (Tags.SAUCER))) {
 				StartCoroutine (this.Explode ());
 			}
 		}

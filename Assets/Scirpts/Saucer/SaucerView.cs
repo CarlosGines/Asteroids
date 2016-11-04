@@ -31,7 +31,6 @@ namespace CgfGames
 		#region Constants
 		//======================================================================
 
-		private const string SAUCER_SHOT_TAG = "SaucerShot";
 		private const float LEAVE_TIME = 1f;
 		private static readonly Vector3 SMALL_SCALE = Vector3.one * 0.5f;
 
@@ -106,7 +105,7 @@ namespace CgfGames
 
 		void OnTriggerEnter2D (Collider2D other)
 		{
-			if (other.CompareTag ("ShipShot")) {
+			if (other.CompareTag (Tags.SHIP_SHOT)) {
 				if (this.HitEvent != null) {
 					this.HitEvent ();
 				}

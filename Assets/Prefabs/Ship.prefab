@@ -1056,7 +1056,7 @@ MonoBehaviour:
   engineAudio: {fileID: 82000012708695290}
   teleportClip: {fileID: 8300000, guid: e2a1dcce6d03549be8b61eb42b8c6d35, type: 3}
   powerupClip: {fileID: 8300000, guid: cc98b8ccdf9a248059887d064e7e5067, type: 3}
-  destroyedClip: {fileID: 8300000, guid: b2dbcbf93eb1edc4aa9579833df4f484, type: 3}
+  explosionClip: {fileID: 8300000, guid: b2dbcbf93eb1edc4aa9579833df4f484, type: 3}
 --- !u!114 &114000012719568038
 MonoBehaviour:
   m_ObjectHideFlags: 1
