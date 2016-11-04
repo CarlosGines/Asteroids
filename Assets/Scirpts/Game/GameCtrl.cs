@@ -165,7 +165,9 @@ namespace CgfGames
 		public void SaucerGone (ISaucerCtrl saucer)
 		{
 			this.Saucer = null;
-			this.View.WaitToSpawnSaucer(this.SpawnSaucer);
+			if (this.Ship.IsAlive) {
+				this.View.WaitToSpawnSaucer (this.SpawnSaucer);
+			}
 			this.CheckLevelFinished ();
 		}
 
@@ -173,6 +175,7 @@ namespace CgfGames
 		{
 			if (oldScore / LIFE_POINTS < score / LIFE_POINTS) {
 				this.GameState.Lives++;
+				this.View.LifeUp ();
 			}
 			this.View.UpdateScore (oldScore, score);
 		}

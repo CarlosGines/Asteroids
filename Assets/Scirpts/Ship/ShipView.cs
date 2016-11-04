@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Collections;
 
@@ -33,7 +34,7 @@ namespace CgfGames
 
 		public float angSpeed;
 		public float thrustForce;
-		public Vector2 Pos { get { return trans.position; } }
+		public Vector2 Pos { get { return _trans.position; } }
 
 		#endregion
 
@@ -45,7 +46,7 @@ namespace CgfGames
 
 		#endregion
 
-		#region Scene references
+		#region External references
 		//======================================================================
 
 		public BaseWeaponView baseWeaponView;
@@ -57,16 +58,23 @@ namespace CgfGames
 		public ParticleSystem explosionPs;
 		public ParticleSystem teleportPs;
 
+		public AudioSource engineAudio;
+
+		public AudioClip teleportClip;
+		public AudioClip powerupClip;
+		public AudioClip destroyedClip;
+
 		#endregion
 
 
 		#region Cached components
 		//======================================================================
 
-		private Transform trans;
-		private Rigidbody2D rb;
-		private Renderer rend;
-		private Collider2D col;
+		private Transform _trans;
+		private Rigidbody2D _rb;
+		private Renderer _rend;
+		private Collider2D _col;
+		private AudioSource _audio;
 
 		#endregion
 
@@ -75,10 +83,26 @@ namespace CgfGames
 
 		void Awake ()
 		{
-			this.trans = transform;
-			this.rb = GetComponent<Rigidbody2D> ();
-			this.rend = GetComponent<Renderer> ();
-			this.col = GetComponent<Collider2D> ();
+			Assert.IsNotNull (baseWeaponView);
+			Assert.IsNotNull (blueWeaponView);
+			Assert.IsNotNull (yellowWeaponView);
+			Assert.IsNotNull (redWeaponView);
+
+			Assert.IsNotNull (enginePs);
+			Assert.IsNotNull (explosionPs);
+			Assert.IsNotNull (teleportPs);
+
+			Assert.IsNotNull (engineAudio);
+
+			Assert.IsNotNull (teleportClip);
+			Assert.IsNotNull (powerupClip);
+			Assert.IsNotNull (destroyedClip);
+
+			_trans = transform;
+			_rb = GetComponent<Rigidbody2D> ();
+			_rend = GetComponent<Renderer> ();
+			_col = GetComponent<Collider2D> ();
+			_audio = GetComponent<AudioSource> ();
 		}
 
 		void OnTriggerEnter2D (Collider2D other)
@@ -115,13 +139,16 @@ namespace CgfGames
 
 		public void Rotate (float direction)
 		{
-			this.trans.Rotate (0, 0, angSpeed * Time.deltaTime * -direction);
+			_trans.Rotate (0, 0, angSpeed * Time.deltaTime * -direction);
 		}
 
 		public void Thrust ()
 		{
-			enginePs.Play ();
-			this.rb.AddForce (trans.right * thrustForce);
+			this.enginePs.Play ();
+			if (!this.engineAudio.isPlaying) {
+				this.engineAudio.Play ();
+			}
+			_rb.AddForce (_trans.right * thrustForce);
 		}
 
 		public void Teleport (Action teleportDone)
@@ -131,28 +158,31 @@ namespace CgfGames
 
 		private IEnumerator Teleport2 (Action teleportDone)
 		{
-			teleportPs.Play ();
-			this.col.enabled = false;
+			this.teleportPs.Play ();
+			_audio.PlayOneShot (this.teleportClip);
+			_col.enabled = false;
 			yield return new WaitForSeconds (0.25f);
-			this.rend.enabled = false;
+			_rend.enabled = false;
 			yield return new WaitForSeconds (1.5f);
-			this.rb.Sleep ();
-			this.trans.position = SpaceObjectMngr.RandomPos ();
+			_rb.Sleep ();
+			_trans.position = SpaceObjectMngr.RandomPos ();
 			teleportPs.Play ();
 			yield return new WaitForSeconds (0.25f);
 			this.SetActiveSoft (true);
+			_audio.PlayOneShot (this.teleportClip);
 			teleportDone.Invoke ();
 		}
 
 		public void Destroyed ()
 		{
 			this.SetActiveSoft (false);
-			explosionPs.Play ();
+			_audio.PlayOneShot (this.destroyedClip, 1.5f);
+			this.explosionPs.Play ();
 		}
 
 		public void Respawn ()
 		{
-			this.trans.position = Vector3.zero;
+			_trans.position = Vector3.zero;
 			this.SetActiveSoft (true);
 		}
 
@@ -163,6 +193,7 @@ namespace CgfGames
 
 		public void NewWeapon (WeaponType type, int ammo)
 		{
+			_audio.PlayOneShot (this.powerupClip);
 			if (this.NewWeaponEvent != null)
 			{
 				this.NewWeaponEvent (type, ammo);
@@ -177,12 +208,12 @@ namespace CgfGames
 		public void SetActiveSoft (bool active)
 		{
 			if (active) {
-				this.rend.enabled = true;
-				this.col.enabled = true;
+				_rend.enabled = true;
+				_col.enabled = true;
 			} else {
-				this.rb.Sleep ();
-				this.rend.enabled = false;
-				this.col.enabled = false;
+				_rb.Sleep ();
+				_rend.enabled = false;
+				_col.enabled = false;
 			}
 		}
 

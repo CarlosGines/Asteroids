@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -25,8 +26,15 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 
-		public GameObject ray;
+		public GameObject rayGobj;
 		public Text ammoText;
+
+		#endregion
+
+		#region Cached components
+		//======================================================================
+
+		private AudioSource _audio;
 
 		#endregion
 
@@ -40,9 +48,17 @@ namespace CgfGames
 		#region Unity callbacks
 		//======================================================================
 
+		void Awake ()
+		{
+			Assert.IsNotNull (rayGobj);
+			Assert.IsNotNull (ammoText);
+
+			_audio = GetComponent<AudioSource> ();
+		}
+
 		void OnEnable ()
 		{
-			ray.SetActive (false);
+			rayGobj.SetActive (false);
 		}
 
 		void OnDisable ()
@@ -68,7 +84,8 @@ namespace CgfGames
 
 		public void Fire ()
 		{
-			ray.SetActive (true);
+			rayGobj.SetActive (true);
+			_audio.Play ();
 			_ammo--;
 			ammoText.text = _ammo.ToString ();
 			StopAllCoroutines ();
@@ -83,7 +100,7 @@ namespace CgfGames
 		private IEnumerator RayOff ()
 		{
 			yield return new WaitForSeconds (rayShotTime);
-			ray.SetActive (false);
+			rayGobj.SetActive (false);
 		}
 
 		public void Reload (int amount)

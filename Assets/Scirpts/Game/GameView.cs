@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
@@ -24,6 +25,8 @@ namespace CgfGames
 
 		void UpdateScore (int oldScore, int score);
 
+		void LifeUp ();
+
 		void UpdateLives (int oldLives, int lives);
 
 		void GameOver ();
@@ -44,14 +47,25 @@ namespace CgfGames
 		#region External references
 		//======================================================================
 
-		public GameObject shipPrefab;
 		public ObjectPool asteroidsPool;
 		public ObjectPool powerupPool;
 		public ObjectPool explosionPool;
 		public SaucerView saucerView;
+
 		public Text mainText;
 		public Text scoreText;
 		public Text livesText;
+
+		public AudioSource lifeUpAudio;
+
+		public AudioClip gameOverClip;
+
+		#endregion
+
+		#region Cached components
+		//======================================================================
+
+		private AudioSource _audio;
 
 		#endregion
 
@@ -59,6 +73,29 @@ namespace CgfGames
 		//======================================================================
 
 		private IEnumerator _waitToSpawnSaucerRoutine;
+
+		#endregion
+
+		#region Unity callbacks
+		//======================================================================
+
+		void Awake ()
+		{
+			Assert.IsNotNull (asteroidsPool);
+			Assert.IsNotNull (powerupPool);
+			Assert.IsNotNull (explosionPool);
+			Assert.IsNotNull (saucerView);
+
+			Assert.IsNotNull (mainText);
+			Assert.IsNotNull (scoreText);
+			Assert.IsNotNull (livesText);
+
+			Assert.IsNotNull (lifeUpAudio);
+
+			Assert.IsNotNull (gameOverClip);
+
+			_audio = GetComponent<AudioSource> ();
+		}
 
 		#endregion
 
@@ -146,16 +183,23 @@ namespace CgfGames
 
 		public void UpdateScore (int oldScore, int score)
 		{
-			scoreText.text = score.ToString ();
+			this.scoreText.text = score.ToString ();
+		}
+
+		public void LifeUp ()
+		{
+			this.lifeUpAudio.Play ();
 		}
 
 		public void UpdateLives (int oldLives, int lives)
 		{
-			livesText.text = lives.ToString () + "  x  ";
+			this.livesText.text = lives.ToString () + "  x  ";
 		}
 
 		public void GameOver ()
 		{
+			_audio.clip = gameOverClip;
+			_audio.Play ();
 			StartCoroutine (this.GameOver2 ());
 		}
 

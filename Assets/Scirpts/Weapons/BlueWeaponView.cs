@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -29,10 +30,31 @@ namespace CgfGames
 
 		#endregion
 
+		#region Cached components
+		//======================================================================
+
+		private AudioSource _audio;
+
+		#endregion
+
 		#region Private fields
 		//======================================================================
 
 		int _ammo;
+
+		#endregion
+
+		#region Unity callbacks
+		//======================================================================
+
+		void Awake ()
+		{
+			Assert.IsNotNull (this.shotPool);
+			Assert.IsTrue (this.cannons.Length > 0);
+			Assert.IsNotNull (ammoText);
+
+			_audio = GetComponent <AudioSource> ();
+		}
 
 		#endregion
 
@@ -41,22 +63,23 @@ namespace CgfGames
 
 		public void Equip ()
 		{
-			ammoText.color = BLUE;
+			this.ammoText.color = BLUE;
 			_ammo = 0;
 		}
 
 		public void Unequip ()
 		{
-			ammoText.text = "";
+			this.ammoText.text = "";
 		}
 
 		public void Fire ()
 		{
+			_audio.Play ();
 			for (int i = 0; i < cannons.Length; i++) {
 				this.shotPool.Get (cannons [i].position, cannons [i].rotation);
 			}
 			_ammo--;
-			ammoText.text = _ammo.ToString ();
+			this.ammoText.text = _ammo.ToString ();
 		}
 
 		public void FireHeld ()
@@ -67,7 +90,7 @@ namespace CgfGames
 		public void Reload (int amount)
 		{
 			_ammo += amount;
-			ammoText.text = _ammo.ToString ();
+			this.ammoText.text = _ammo.ToString ();
 		}
 
 		#endregion

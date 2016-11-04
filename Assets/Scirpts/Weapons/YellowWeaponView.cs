@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -47,6 +48,9 @@ namespace CgfGames
 
 		void Awake ()
 		{
+			Assert.IsNotNull (this.rocketPool);
+			Assert.IsNotNull (this.ammoText);
+
 			_trans = transform;
 		}
 			
@@ -57,20 +61,20 @@ namespace CgfGames
 
 		public void Equip ()
 		{
-			ammoText.color = YELLOW;
+			this.ammoText.color = YELLOW;
 			_ammo = 0;
 		}
 
 		public void Unequip ()
 		{
-			ammoText.text = "";
+			this.ammoText.text = "";
 		}
 
 		public void Fire ()
 		{
 			this.rocketPool.Get (_trans.position, _trans.rotation);
 			_ammo--;
-			ammoText.text = _ammo.ToString ();
+			this.ammoText.text = _ammo.ToString ();
 		}
 
 		public void FireHeld ()
@@ -81,7 +85,7 @@ namespace CgfGames
 		public void Reload (int amount)
 		{
 			_ammo += amount;
-			ammoText.text = _ammo.ToString ();
+			this.ammoText.text = _ammo.ToString ();
 		}
 
 		#endregion

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Collections;
 
@@ -40,7 +41,7 @@ namespace CgfGames
 		//======================================================================
 
 		public float speed;
-		public Vector2 Pos { get { return trans.position; } }
+		public Vector2 Pos { get { return _trans.position; } }
 
 		#endregion
 
@@ -57,14 +58,16 @@ namespace CgfGames
 
 		public ShotMngr saucerShot;
 		public ParticleSystem explosionPs;
+		public AudioSource weaponAudio;
+		public AudioSource explosionAudio;
 
 		#endregion
 
 		#region Cached components
 		//======================================================================
 
-		[HideInInspector]
-		public Transform trans;
+		private Transform _trans;
+		private AudioSource _audio;
 
 		#endregion
 
@@ -82,16 +85,23 @@ namespace CgfGames
 
 		void Awake ()
 		{
-			this.trans = transform;
+			Assert.IsNotNull (this.saucerShot);
+			Assert.IsNotNull (this.explosionPs);
+			Assert.IsNotNull (this.weaponAudio);
+			Assert.IsNotNull (this.explosionAudio);
+
+			_trans = transform;
+			_audio = GetComponent<AudioSource> ();
+
 			_vTranslate = Vector3.zero;
 		}
 		
 		// Update is called once per frame
 		void Update () {
-			this.trans.Translate (
+			_trans.Translate (
 				(Vector3.right + _vTranslate) * _sense * speed * Time.deltaTime
 			);
-			if (Mathf.Abs (this.trans.position.x) > SpaceObjectMngr.width / 2) {
+			if (Mathf.Abs (_trans.position.x) > SpaceObjectMngr.width / 2) {
 				this.Leave ();
 			}
 		}
@@ -117,9 +127,9 @@ namespace CgfGames
 
 		public void Init (int size, float speed)
 		{
-			this.trans.position = SpaceObjectMngr.LateralRandomPos ();
-			this.trans.localScale = SMALL_SCALE * (size + 1);
-			_sense = this.trans.position.x > 0 ? -1 : 1;
+			_trans.position = SpaceObjectMngr.LateralRandomPos ();
+			_trans.localScale = SMALL_SCALE * (size + 1);
+			_sense = _trans.position.x > 0 ? -1 : 1;
 			this.speed = speed;
 			StartCoroutine (this.SetRandomDirection ());
 		}
@@ -138,9 +148,10 @@ namespace CgfGames
 
 		public void Fire (float angle)
 		{
-			saucerShot.gameObject.SetActive (true);
-			saucerShot.trans.position = trans.position;
-			saucerShot.trans.rotation = Quaternion.Euler (0, 0, angle);
+			this.saucerShot.gameObject.SetActive (true);
+			this.weaponAudio.Play ();
+			this.saucerShot.trans.position = _trans.position;
+			this.saucerShot.trans.rotation = Quaternion.Euler (0, 0, angle);
 		}
 
 		public void ShipDestroyed ()
@@ -156,8 +167,9 @@ namespace CgfGames
 
 		public void Destroyed ()
 		{
-			explosionPs.transform.position = this.trans.position;
-			explosionPs.Play ();
+			this.explosionPs.transform.position = _trans.position;
+			this.explosionPs.Play ();
+			this.explosionAudio.Play ();
 			gameObject.SetActive (false);
 		}
 

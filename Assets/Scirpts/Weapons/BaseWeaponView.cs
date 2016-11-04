@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections;
 
 namespace CgfGames
@@ -30,6 +31,7 @@ namespace CgfGames
 		//======================================================================
 
 		private Transform _trans;
+		private AudioSource _audio;
 
 		#endregion
 
@@ -38,7 +40,10 @@ namespace CgfGames
 
 		void Awake ()
 		{
+			Assert.IsNotNull (shotPool);
+
 			_trans = transform;
+			_audio = GetComponent <AudioSource> ();
 		}
 			
 		#endregion
@@ -57,6 +62,7 @@ namespace CgfGames
 		public void Fire ()
 		{
 			this.shotPool.Get (_trans.position, _trans.rotation);
+			_audio.Play ();
 		}
 
 		public void FireHeld ()

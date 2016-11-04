@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -16,6 +17,14 @@ namespace CgfGames
 
 		#endregion
 
+		#region External references
+		//======================================================================
+
+		public AudioClip explosion;
+
+
+		#endregion
+
 		#region Cached components
 		//======================================================================
 
@@ -23,6 +32,7 @@ namespace CgfGames
 		private CircleCollider2D _col;
 		private SpriteRenderer _rend;
 		private ParticleSystem _ps;
+		private AudioSource _audio;
 
 		#endregion
 
@@ -33,7 +43,6 @@ namespace CgfGames
 		private float _initSpeed;
 		private float _initColRadius;
 			
-
 		#endregion
 
 		#region Unity callbacks
@@ -41,10 +50,14 @@ namespace CgfGames
 
 		void Awake ()
 		{
-			this._trans = transform;
-			this._col = GetComponent <CircleCollider2D> (); 
-			this._rend = GetComponent <SpriteRenderer> (); 
-			this._ps = GetComponent <ParticleSystem> ();
+			Assert.IsNotNull (this.explosion);
+
+			_trans = transform;
+			_col = GetComponent <CircleCollider2D> (); 
+			_rend = GetComponent <SpriteRenderer> (); 
+			_ps = GetComponent <ParticleSystem> ();
+			_audio = GetComponent <AudioSource> ();
+
 			_initSpeed = this.speed;
 			_initColRadius = this._col.radius;
 		}
@@ -52,6 +65,7 @@ namespace CgfGames
 		void OnEnable ()
 		{
 			StartCoroutine (this.TimedExplode ());
+			_audio.Play ();
 		}
 
 		private IEnumerator TimedExplode ()
@@ -78,10 +92,10 @@ namespace CgfGames
 		void OnDisable ()
 		{
 			StopAllCoroutines ();
-			_exploded = false;
 			this.speed =_initSpeed;
-			this._rend.enabled = true;
-			this._col.radius = _initColRadius;
+			_exploded = false;
+			_rend.enabled = true;
+			_col.radius = _initColRadius;
 		}
 
 		#endregion
@@ -91,11 +105,13 @@ namespace CgfGames
 
 		private IEnumerator Explode ()
 		{
-			_exploded = true;
 			this.speed = 0;
-			this._rend.enabled = false;
-			this._col.radius = explosionRadius;
-			this._ps.Play ();
+			_exploded = true;
+			_rend.enabled = false;
+			_col.radius = explosionRadius;
+			_ps.Play ();
+			_audio.Stop ();
+			_audio.PlayOneShot (this.explosion);
 			yield return new WaitForSeconds (_ps.duration);
 			gameObject.SetActive (false);
 		}
