@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703bb2da6f8d4361b3167da83393266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1000010352009246, guid: a2cc2b14f4c4f4d7c8f437c803954a5a, type: 2}
   amount: 5
+  prefab: {fileID: 1000010352009246, guid: a2cc2b14f4c4f4d7c8f437c803954a5a, type: 2}
 --- !u!4 &217816744
 Transform:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &364078117
 RectTransform:
   m_ObjectHideFlags: 0
@@ -416,8 +416,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703bb2da6f8d4361b3167da83393266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1000012192326680, guid: 20584812db75f4d6088310f2a298b820, type: 2}
   amount: 5
+  prefab: {fileID: 1000012192326680, guid: 20584812db75f4d6088310f2a298b820, type: 2}
 --- !u!1 &379004333
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,8 +458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703bb2da6f8d4361b3167da83393266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1000014099307368, guid: ef10c47962b1a4416923ee4fba367e29, type: 2}
   amount: 50
+  prefab: {fileID: 1000014099307368, guid: ef10c47962b1a4416923ee4fba367e29, type: 2}
 --- !u!1 &412981967
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,8 +500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703bb2da6f8d4361b3167da83393266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1000011834678798, guid: fccfd9416cfd14d12a545f7d1528c93b, type: 2}
   amount: 3
+  prefab: {fileID: 1000011834678798, guid: fccfd9416cfd14d12a545f7d1528c93b, type: 2}
 --- !u!1001 &548646560
 Prefab:
   m_ObjectHideFlags: 0
@@ -2627,7 +2627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &786440683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2891,8 +2891,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703bb2da6f8d4361b3167da83393266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1000014099307368, guid: e49131366b2bd4ff1956ba7c865fd140, type: 2}
   amount: 50
+  prefab: {fileID: 1000014099307368, guid: e49131366b2bd4ff1956ba7c865fd140, type: 2}
 --- !u!114 &1099310104 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000010358406686, guid: bfa6425658dff4e3394cc34467ed6c55,
@@ -3236,7 +3236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1437666983
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3413,9 +3413,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7de462a5be0fb47a48b13e2cde898d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMngr: {fileID: 756148620}
   gameView: {fileID: 1554431138}
   shipView: {fileID: 2113206842}
-  inputMngr: {fileID: 756148620}
   game:
     _gameState:
       _score: 0
@@ -3462,9 +3462,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315fb7d7afd314cb5a9956c9bd4e750f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroidsPool: {fileID: 1723576219}
+  asteroidPool: {fileID: 1723576219}
   powerupPool: {fileID: 217816743}
-  explosionPool: {fileID: 372766796}
+  asteroidExplosionPool: {fileID: 372766796}
   saucerView: {fileID: 1099310104}
   mainText: {fileID: 1319901227}
   scoreText: {fileID: 889076233}
@@ -3727,8 +3727,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6703bb2da6f8d4361b3167da83393266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1000012627283746, guid: 232516ad561084f78b978285e6568fca, type: 2}
   amount: 30
+  prefab: {fileID: 1000012627283746, guid: 232516ad561084f78b978285e6568fca, type: 2}
 --- !u!4 &1723576220
 Transform:
   m_ObjectHideFlags: 0
@@ -3821,7 +3821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2003289258
 RectTransform:
   m_ObjectHideFlags: 0

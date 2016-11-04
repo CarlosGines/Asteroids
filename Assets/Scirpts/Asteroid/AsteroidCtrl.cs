@@ -24,7 +24,7 @@ namespace CgfGames
 		event Action<IAsteroidCtrl, List<IAsteroidCtrl>> DestroyedEvent;
 
 		/// <summary>
-		/// Perform actions needed when the asteroid is destroyed.
+		/// Perform actions needed when this asteroid is destroyed.
 		/// </summary>
 		void Destroyed ();
 	}

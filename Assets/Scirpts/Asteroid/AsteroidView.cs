@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Collections.Generic;
 
@@ -91,26 +92,6 @@ namespace CgfGames
 
 		#endregion
 
-		#region External references
-		//======================================================================
-
-		/// <summary>
-		/// The asteroid game object pool.
-		/// </summary>
-		public ObjectPool asteroidPool;
-
-		/// <summary>
-		/// The power up game object pool.
-		/// </summary>
-		public ObjectPool powerupPool;
-
-		/// <summary>
-		/// The asteroid explosion game object pool.
-		/// </summary>
-		public ObjectPool explosionPool;
-
-		#endregion
-
 		#region Cached fields
 		//======================================================================
 
@@ -118,6 +99,26 @@ namespace CgfGames
 		/// Transform component cached.
 		/// </summary>
 		public Transform trans;
+
+		#endregion
+
+		#region private fields
+		//======================================================================
+
+		/// <summary>
+		/// The asteroid game object pool.
+		/// </summary>
+		private ObjectPool _asteroidPool;
+
+		/// <summary>
+		/// The power up game object pool.
+		/// </summary>
+		public ObjectPool _powerupPool;
+
+		/// <summary>
+		/// The asteroid explosion game object pool.
+		/// </summary>
+		public ObjectPool _explosionPool;
 
 		#endregion
 
@@ -157,9 +158,9 @@ namespace CgfGames
 		{
 			this.trans.localScale = Vector3.one * 0.4f *
 				(int)Math.Pow (2, size);
-			this.asteroidPool = asteroidPool;
-			this.powerupPool = powerupPool;
-			this.explosionPool = explosionPool;
+			_asteroidPool = asteroidPool;
+			_powerupPool = powerupPool;
+			_explosionPool = explosionPool;
 			this.speed = this.baseSpeed * (AsteroidCtrl.MAX_SIZE + 1 - size);
 		}
 
@@ -170,7 +171,7 @@ namespace CgfGames
 		{
 			gameObject.SetActive (false);
 			// Spawn explosion.
-			explosionPool.Get (this.trans.position, Quaternion.identity);
+			_explosionPool.Get (this.trans.position, Quaternion.identity);
 		}
 
 		/// <summary>
@@ -184,14 +185,14 @@ namespace CgfGames
 			Quaternion rot = Quaternion.Euler (0, 0, angle) *
             	this.trans.rotation;
 			// Obtain and init asteoid.
-			IAsteroidView asteroiView = asteroidPool
+			IAsteroidView asteroiView = _asteroidPool
 				.Get (this.trans.position, rot)
 				.GetComponent<AsteroidView> ();
 			asteroiView.Init (
 				childSize,
-				this.asteroidPool,
-				this.powerupPool,
-				this.explosionPool
+				_asteroidPool,
+				_powerupPool,
+				_explosionPool
 			);
 			return asteroiView;
 		}
@@ -205,7 +206,7 @@ namespace CgfGames
 			// Chance to get a power up.
 			if (value < 0.5f) {
 				WeaponPowerupMngr powerup = 
-					powerupPool.Get (trans.position, trans.rotation)
+					_powerupPool.Get (trans.position, trans.rotation)
 					.GetComponent<WeaponPowerupMngr> ();
 				// Random power up type.
 				if (value < 1f / 6f) {
