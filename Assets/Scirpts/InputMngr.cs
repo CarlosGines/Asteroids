@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace CgfGames
 {
@@ -6,27 +7,53 @@ namespace CgfGames
 
 		public ShipCtrl ship;
 
-		// Update is called once per frame
+		#if UNITY_IOS || UNITY_ANDROID
+
 		void Update () 
 		{
-			if (Input.GetButtonDown ("Fire")) {
+			if (CrossPlatformInputManager.GetButtonDown ("Fire")) {
 				ship.Fire ();
-			} else if (Input.GetButton ("Fire")) {
+			} else if (CrossPlatformInputManager.GetButton ("Fire")) {
 				ship.FireHeld ();
 			}
-			if (Input.GetButtonDown ("Teleport")) {
+			if (CrossPlatformInputManager.GetButtonDown ("Teleport")) {
 				ship.Teleport ();
 			}
-			float h = Input.GetAxis ("Horizontal");
-			if (h != 0) {
-				ship.Rotate (h);
+
+			Vector2 dir = new Vector2 (
+				CrossPlatformInputManager.GetAxis ("Horizontal"),
+				CrossPlatformInputManager.GetAxis ("Vertical")
+			);
+			if (dir != Vector2.zero) {
+				ship.Rotate (dir);
 			}
 		}
 
+		#else
+
+		void Update () 
+		{
+			if (Input.GetButtonDown ("Fire")) {
+				this.ship.Fire ();
+			} else if (Input.GetButton ("Fire")) {
+				this.ship.FireHeld ();
+			}
+			if (Input.GetButtonDown ("Teleport")) {
+				this.ship.Teleport ();
+			}
+			Input.GetAxis ("Horizontal");
+			float h = Input.GetAxis ("Horizontal");
+			if (h != 0) {
+				this.ship.Rotate (h);
+			}
+		}
+
+		#endif
+
 		void FixedUpdate ()
 		{
-			if (Input.GetButton ("Thrust")) {
-				ship.Thrust ();
+			if (CrossPlatformInputManager.GetButton ("Thrust")) {
+				this.ship.Thrust ();
 			}
 		}
 	}

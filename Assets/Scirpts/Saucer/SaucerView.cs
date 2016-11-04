@@ -67,7 +67,6 @@ namespace CgfGames
 		//======================================================================
 
 		private Transform _trans;
-		private AudioSource _audio;
 
 		#endregion
 
@@ -91,7 +90,6 @@ namespace CgfGames
 			Assert.IsNotNull (this.explosionAudio);
 
 			_trans = transform;
-			_audio = GetComponent<AudioSource> ();
 
 			_vTranslate = Vector3.zero;
 		}

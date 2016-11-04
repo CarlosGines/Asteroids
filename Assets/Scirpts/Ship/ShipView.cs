@@ -17,6 +17,8 @@ namespace CgfGames
 
 		void Rotate (float direction);
 
+		void Rotate (Vector2 direction);
+
 		void Thrust ();
 
 		void Teleport (Action teleportDone);
@@ -137,9 +139,14 @@ namespace CgfGames
 			}
 		}
 
-		public void Rotate (float direction)
+		public void Rotate (float dir)
 		{
-			_trans.Rotate (0, 0, angSpeed * Time.deltaTime * -direction);
+			_trans.Rotate (0, 0, angSpeed * Time.deltaTime * -dir);
+		}
+
+		public void Rotate (Vector2 dir)
+		{
+			_trans.rotation = Quaternion.FromToRotation (Vector2.right, dir);
 		}
 
 		public void Thrust ()

@@ -22,6 +22,8 @@ namespace CgfGames
 		void FireHeld ();
 
 		void Rotate (float direction);
+		
+		void Rotate (Vector2 dir);
 
 		void Thrust ();
 
@@ -126,10 +128,10 @@ namespace CgfGames
 
 			_baseWeapon = _weapons [(int)WeaponType.BASE];
 //			_baseWeapon =  new TimedWeaponCtrl (
-//				BLUE_SHOT_TIME,
-//				BLUE_SHOT_TIME,
+//				RED_RAY_TIME,
+//				RED_RAY_TIME,
 //				new WeaponCtrl (
-//					this.View.GetWeapon (WeaponType.BLUE)
+//					this.View.GetWeapon (WeaponType.YELLOW)
 //				)
 //			);
 
@@ -170,6 +172,12 @@ namespace CgfGames
 			}
 		}
 
+		public void Rotate (Vector2 direction)
+		{
+			if (this.IsActive) {
+				this.View.Rotate (direction);
+			}
+		}
 
 		public void Rotate (float direction)
 		{
