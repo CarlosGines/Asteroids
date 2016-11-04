@@ -12,7 +12,7 @@ namespace CgfGames
 	{
 		void WaitToRespawnShip (Action respawn);
 	
-		IAsteroidView SpawnAsteroid ();
+		IAsteroidView SpawnAsteroid (Vector3 shipPos);
 
 		void WaitToSpawnSaucer (Action spawnSacucer);
 
@@ -35,7 +35,7 @@ namespace CgfGames
 		//======================================================================
 
 		private const float NEW_LEVEL_TIME = 2f;
-		private const float RESPAWN_SHIP_TIME = 2f;
+		private const float MIN_RESPAWN_SHIP_TIME = 2f;
 		private const float SPAWN_SAUCER_MIN_TIME = 3f;
 		private const float SPAWN_SAUCER_MAX_TIME = 30f;
 
@@ -72,16 +72,23 @@ namespace CgfGames
 
 		private IEnumerator WaitToRespawnShip2 (Action respawn)
 		{
-			yield return new WaitForSeconds (RESPAWN_SHIP_TIME);
+			yield return new WaitForSeconds (MIN_RESPAWN_SHIP_TIME);
+			while (Physics2D.OverlapCircle (Vector2.zero, 2f) != null) {
+				yield return 0;
+			}
 			respawn ();
 		}
 		
-		public IAsteroidView SpawnAsteroid ()
+		public IAsteroidView SpawnAsteroid (Vector3 shipPos)
 		{				
+			Vector3 pos = SpaceObjectMngr.RandomPos ();
+			while (SpaceObjectMngr.SmartPath (pos, shipPos).sqrMagnitude < 
+					2.5f * 2.5f) {
+				pos = SpaceObjectMngr.RandomPos ();
+			}
 			AsteroidView asteroidView = this.asteroidsPool
 				.Get (
-					SpaceObjectMngr.RandomPos (),
-					Quaternion.Euler (0, 0, Random.value * 360)
+					pos, Quaternion.Euler (0, 0, Random.value * 360)
 				).GetComponent<AsteroidView> ();
 			asteroidView.Init (
 				AsteroidCtrl.MAX_SIZE,
@@ -155,7 +162,7 @@ namespace CgfGames
 		private IEnumerator GameOver2 ()
 		{
 			mainText.enabled = true;
-			yield return new WaitForSeconds (3f);
+			yield return new WaitForSeconds (5f);
 			SceneManager.LoadScene (0);
 		}
 

@@ -52,4 +52,27 @@ public class SpaceObjectMngr : MonoBehaviour {
 		pos.y = Random.value * height - height / 2;
 		return pos;
 	}
+
+	public static Vector2 SmartPath (Vector2 start, Vector2 end)
+	{
+		float h = SpaceObjectMngr.height;
+		float w = SpaceObjectMngr.width;
+		float targetX;
+		float targetY;
+		if (Mathf.Abs (end.x - start.x) < w / 2) {
+			targetX = end.x;
+		} else if (start.x > 0) {
+			targetX = end.x + w;
+		} else {
+			targetX = end.x - w;
+		}
+		if (Mathf.Abs (end.y - start.y) < h / 2) {
+			targetY = end.y;
+		} else if (start.y > 0) {
+			targetY = end.y + h;
+		} else {
+			targetY = end.y - h;
+		}
+		return new Vector2 (targetX, targetY) - start;
+	}
 }

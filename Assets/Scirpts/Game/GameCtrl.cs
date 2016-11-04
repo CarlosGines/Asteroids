@@ -99,7 +99,6 @@ namespace CgfGames
 		{
 			this.GameState.Level++;
 			int numAsteroids = this.GameState.Level + 3;
-//			Debug.Log (string.Format ("Nivel {0}. Vamos a Spawnear {1} asteroides", this.GameState.Level, numAsteroids));
 			for (int i = 0; i < numAsteroids ; i++) {
 				this.SpawnAsteroid ();
 			}
@@ -120,7 +119,7 @@ namespace CgfGames
 		public IAsteroidCtrl SpawnAsteroid ()
 		{
 			AsteroidCtrl asteroid = new AsteroidCtrl (
-				this.View.SpawnAsteroid (), AsteroidCtrl.MAX_SIZE
+				this.View.SpawnAsteroid (Ship.Pos), AsteroidCtrl.MAX_SIZE
 			);
 			this.AsteroidList.Add (asteroid);
 			asteroid.DestroyedEvent += AsteroidDestroyed;

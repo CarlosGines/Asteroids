@@ -136,25 +136,8 @@ namespace CgfGames
 
 		private float GetShotAngleSmart ()
 		{
-			float h = SpaceObjectMngr.height;
-			float w = SpaceObjectMngr.width;
-			float targetX;
-			float targetY;
-			if (Mathf.Abs (this.Ship.Pos.x - this.View.Pos.x) < w / 2) {
-				targetX = this.Ship.Pos.x;
-			} else if (this.View.Pos.x > 0) {
-				targetX = this.Ship.Pos.x + w;
-			} else {
-				targetX = this.Ship.Pos.x - w;
-			}
-			if (Mathf.Abs (this.Ship.Pos.y - this.View.Pos.y) < h / 2) {
-				targetY = this.Ship.Pos.y;
-			} else if (this.View.Pos.y > 0) {
-				targetY = this.Ship.Pos.y + h;
-			} else {
-				targetY = this.Ship.Pos.y - h;
-			}
-			Vector2 dir = new Vector2 (targetX, targetY) - this.View.Pos;
+			Vector2 dir = 
+				SpaceObjectMngr.SmartPath (this.View.Pos, this.Ship.Pos);
 			return Vector2.Angle (Vector2.right, dir) * Mathf.Sign (dir.y);
 		}
 
