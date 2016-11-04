@@ -8,6 +8,8 @@ namespace CgfGames
 		public float speed;
 		public WeaponType type;
 		public int ammo;
+
+		public SpriteRenderer halo;
 		public Sprite blueSprite;
 		public Sprite yellowSprite;
 		public Sprite redSprite;
@@ -59,14 +61,17 @@ namespace CgfGames
 			case WeaponType.BLUE:
 				this.ammo = 50;
 				_rend.sprite = blueSprite;
+				this.halo.color = BlueWeaponView.BLUE;
 				break;
 			case WeaponType.YELLOW:
 				this.ammo = 5;
 				_rend.sprite = yellowSprite;
+				this.halo.color = YellowWeaponView.YELLOW;
 				break;
 			case WeaponType.RED:
 				this.ammo = 15;
 				_rend.sprite = redSprite;
+				this.halo.color = RedWeaponView.RED;
 				break;
 			}
 			_dir = _trans.right;

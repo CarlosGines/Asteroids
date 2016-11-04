@@ -5,6 +5,13 @@ namespace CgfGames
 {
 	public class RedWeaponView : MonoBehaviour, IWeaponView
 	{
+		#region Constants
+		//======================================================================
+
+		public static readonly Color RED = new Color (252f / 255, 0, 13f / 255);
+
+		#endregion 
+
 		#region Public fields and properties
 		//======================================================================
 

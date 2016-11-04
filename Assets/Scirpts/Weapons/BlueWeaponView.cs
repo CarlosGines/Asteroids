@@ -8,8 +8,7 @@ namespace CgfGames
 		#region Constants
 		//======================================================================
 
-		private const string SHIP_SHOT_TAG = "ShipShot";
-		private static readonly Color BLUE = new Color (0, 114f / 255, 188f / 255);
+		public static readonly Color BLUE = new Color (0, 114f / 255, 188f / 255);
 
 		#endregion 
 
@@ -46,7 +45,6 @@ namespace CgfGames
 					cannons[i].position, cannons[i].rotation
 				).GetComponent<ShotMngr> ();
 				shot.Color = BLUE;
-				shot.tag = SHIP_SHOT_TAG;
 			}
 		}
 

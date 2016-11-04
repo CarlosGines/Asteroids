@@ -8,7 +8,7 @@ namespace CgfGames
 		#region Constants
 		//======================================================================
 
-		private const string SHIP_SHOT_TAG = "ShipShot";
+		public static readonly Color YELLOW = new Color (255f / 255, 209f / 255, 0);
 
 		#endregion 
 
@@ -59,7 +59,6 @@ namespace CgfGames
 			GameObject rocketGobj = this.rocketPool.Get (
 				_trans.position, _trans.rotation
 			);
-			rocketGobj.tag = SHIP_SHOT_TAG;
 		}
 
 		public void FireHeld ()
