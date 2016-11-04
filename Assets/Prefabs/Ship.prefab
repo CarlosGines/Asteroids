@@ -620,6 +620,7 @@ MonoBehaviour:
   - {fileID: 4000011074012950}
   - {fileID: 4000010974405446}
   - {fileID: 4000011196435366}
+  ammoText: {fileID: 0}
 --- !u!114 &114000010685866220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,6 +645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayShotTime: 0.5
   ray: {fileID: 1000013626984114}
+  ammoText: {fileID: 0}
 --- !u!114 &114000010985295546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -688,6 +690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rocketPool: {fileID: 0}
+  ammoText: {fileID: 0}
 --- !u!198 &198000010027395938
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -7689,7 +7692,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     startLifetime:
-      scalar: 1
+      scalar: 0.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -7724,7 +7727,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSpeed:
-      scalar: -2
+      scalar: -4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -7850,7 +7853,7 @@ ParticleSystem:
       maxColor: {r: 0.9137255, g: 0.77254903, b: 1, a: 1}
       minMaxState: 0
     startSize:
-      scalar: 3.08
+      scalar: 4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -10113,7 +10116,7 @@ ParticleSystem:
       maxGradient:
         key0:
           serializedVersion: 2
-          rgba: 4278243839
+          rgba: 4278234879
         key1:
           serializedVersion: 2
           rgba: 4290540032

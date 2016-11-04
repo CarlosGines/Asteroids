@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 namespace CgfGames
@@ -23,6 +24,7 @@ namespace CgfGames
 		//======================================================================
 
 		public ObjectPool rocketPool;
+		public Text ammoText;
 
 		#endregion
 
@@ -30,6 +32,13 @@ namespace CgfGames
 		//======================================================================
 
 		private Transform _trans;
+
+		#endregion
+
+		#region Private fields
+		//======================================================================
+
+		int _ammo;
 
 		#endregion
 
@@ -48,17 +57,20 @@ namespace CgfGames
 
 		public void Equip ()
 		{
+			ammoText.color = YELLOW;
+			_ammo = 0;
 		}
 
 		public void Unequip ()
 		{
+			ammoText.text = "";
 		}
 
 		public void Fire ()
 		{
-			GameObject rocketGobj = this.rocketPool.Get (
-				_trans.position, _trans.rotation
-			);
+			this.rocketPool.Get (_trans.position, _trans.rotation);
+			_ammo--;
+			ammoText.text = _ammo.ToString ();
 		}
 
 		public void FireHeld ()
@@ -68,6 +80,8 @@ namespace CgfGames
 
 		public void Reload (int amount)
 		{
+			_ammo += amount;
+			ammoText.text = _ammo.ToString ();
 		}
 
 		#endregion

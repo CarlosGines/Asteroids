@@ -54,7 +54,15 @@ namespace CgfGames
 
 		public Vector2 Pos { get { return this.View.Pos; } }
 
-		public IWeaponCtrl CurrentWeapon { get; private set; }
+		private IWeaponCtrl _currentWeapon;
+		public IWeaponCtrl CurrentWeapon { 
+			get { return _currentWeapon; }
+			private set {
+				_currentWeapon.Unequip ();
+				_currentWeapon = value;
+				_currentWeapon.Equip ();
+			}
+		}
 
 		#endregion
 
@@ -118,15 +126,15 @@ namespace CgfGames
 
 			_baseWeapon = _weapons [(int)WeaponType.BASE];
 //			_baseWeapon =  new TimedWeaponCtrl (
-//				0.2f,
-//				0.2f,
+//				BLUE_SHOT_TIME,
+//				BLUE_SHOT_TIME,
 //				new WeaponCtrl (
-//					this.View.GetWeapon (WeaponType.YELLOW)
+//					this.View.GetWeapon (WeaponType.BLUE)
 //				)
 //			);
 
-			this.CurrentWeapon = _baseWeapon;
-			this.CurrentWeapon.Equip ();
+			_currentWeapon = _baseWeapon;
+			_currentWeapon.Equip ();
 		}
 
 		#endregion
@@ -136,10 +144,8 @@ namespace CgfGames
 
 		public void Equip (WeaponType type, int ammo)
 		{
-			if (this.CurrentWeapon.Type != type) {
-				this.CurrentWeapon.Unequip ();
+			if (this.CurrentWeapon.Type != type) {				
 				this.CurrentWeapon = _weapons [(int)type];
-				this.CurrentWeapon.Equip ();
 			}
 			this.CurrentWeapon.Reload (ammo);
 		}

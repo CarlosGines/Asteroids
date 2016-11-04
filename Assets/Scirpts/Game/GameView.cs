@@ -78,7 +78,6 @@ namespace CgfGames
 		
 		public IAsteroidView SpawnAsteroid ()
 		{				
-			Debug.Log ("Dame asteroide pare");
 			AsteroidView asteroidView = this.asteroidsPool
 				.Get (
 					SpaceObjectMngr.RandomPos (),
@@ -145,7 +144,7 @@ namespace CgfGames
 
 		public void UpdateLives (int oldLives, int lives)
 		{
-			livesText.text = lives.ToString ();
+			livesText.text = lives.ToString () + "  x  ";
 		}
 
 		public void GameOver ()

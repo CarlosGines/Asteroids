@@ -14,11 +14,6 @@ namespace CgfGames
 
 		public float speed;
 
-		public Color Color { 
-			get { return _rend.color; } 
-			set { _rend.color = value; }
-		}
-
 		#endregion
 
 		#region Cached components
@@ -26,7 +21,6 @@ namespace CgfGames
 
 		[HideInInspector]
 		public Transform trans;
-		private SpriteRenderer _rend;
 		private TrailRenderer _tr;
 
 		#endregion
@@ -37,7 +31,6 @@ namespace CgfGames
 		void Awake ()
 		{
 			this.trans = transform;
-			_rend = GetComponent<SpriteRenderer> ();
 			_tr = GetComponent<TrailRenderer> ();
 			GetComponent <SpaceObjectMngr> ().OffScreenEvent += _tr.Clear;
 		}

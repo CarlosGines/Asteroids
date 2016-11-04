@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 namespace CgfGames
@@ -25,6 +26,14 @@ namespace CgfGames
 		//======================================================================
 
 		public GameObject ray;
+		public Text ammoText;
+
+		#endregion
+
+		#region Private fields
+		//======================================================================
+
+		int _ammo;
 
 		#endregion
 
@@ -48,15 +57,20 @@ namespace CgfGames
 
 		public void Equip ()
 		{
+			ammoText.color = RED;
+			_ammo = 0;
 		}
 
 		public void Unequip ()
 		{
+			ammoText.text = "";
 		}
 
 		public void Fire ()
 		{
 			ray.SetActive (true);
+			_ammo--;
+			ammoText.text = _ammo.ToString ();
 			StopAllCoroutines ();
 			StartCoroutine (this.RayOff ());
 		}
@@ -74,6 +88,8 @@ namespace CgfGames
 
 		public void Reload (int amount)
 		{
+			_ammo += amount;
+			ammoText.text = _ammo.ToString ();
 		}
 
 		#endregion
