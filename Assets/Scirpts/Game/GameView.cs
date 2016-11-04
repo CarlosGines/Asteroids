@@ -110,7 +110,7 @@ namespace CgfGames
 		private IEnumerator WaitToRespawnShip2 (Action respawn)
 		{
 			yield return new WaitForSeconds (MIN_RESPAWN_SHIP_TIME);
-			while (Physics2D.OverlapCircle (Vector2.zero, 2f) != null) {
+			while (Physics2D.OverlapCircle (Vector2.zero, 1.5f) != null) {
 				yield return 0;
 			}
 			respawn ();
