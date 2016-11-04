@@ -148,13 +148,27 @@ Prefab:
       propertyPath: m_Name
       value: 'Ship '
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011115050114, guid: 16ca49477a29648458e237807c3387a4,
+    - target: {fileID: 198000013913448082, guid: 16ca49477a29648458e237807c3387a4,
         type: 2}
-      propertyPath: m_Enabled
-      value: 0
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114000011115050114, guid: 16ca49477a29648458e237807c3387a4, type: 2}
+    - target: {fileID: 198000013913448082, guid: 16ca49477a29648458e237807c3387a4,
+        type: 2}
+      propertyPath: randomSeed
+      value: -1925514601
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013913448082, guid: 16ca49477a29648458e237807c3387a4,
+        type: 2}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013913448082, guid: 16ca49477a29648458e237807c3387a4,
+        type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16ca49477a29648458e237807c3387a4, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &217816742

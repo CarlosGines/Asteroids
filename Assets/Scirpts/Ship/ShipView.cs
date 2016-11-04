@@ -28,13 +28,6 @@ namespace CgfGames
 	[RequireComponent (typeof (SpaceObjectMngr))]
 	public class ShipView : MonoBehaviour, IShipView
 	{
-		#region Constants
-		//======================================================================
-
-		private const float TELEPORT_TIME = 2f;
-
-		#endregion
-
 		#region Public fields & properties
 		//======================================================================
 
@@ -60,7 +53,9 @@ namespace CgfGames
 		public YellowWeaponView yellowWeaponView;
 		public RedWeaponView redWeaponView;
 
+		public ParticleSystem enginePs;
 		public ParticleSystem explosionPs;
+		public ParticleSystem teleportPs;
 
 		#endregion
 
@@ -125,6 +120,7 @@ namespace CgfGames
 
 		public void Thrust ()
 		{
+			enginePs.Play ();
 			this.rb.AddForce (trans.right * thrustForce);
 		}
 
@@ -135,9 +131,15 @@ namespace CgfGames
 
 		private IEnumerator Teleport2 (Action teleportDone)
 		{
-			this.SetActiveSoft (false);
-			yield return new WaitForSeconds (TELEPORT_TIME);
+			teleportPs.Play ();
+			this.col.enabled = false;
+			yield return new WaitForSeconds (0.25f);
+			this.rend.enabled = false;
+			yield return new WaitForSeconds (1.5f);
+			this.rb.Sleep ();
 			this.trans.position = SpaceObjectMngr.RandomPos ();
+			teleportPs.Play ();
+			yield return new WaitForSeconds (0.25f);
 			this.SetActiveSoft (true);
 			teleportDone.Invoke ();
 		}
