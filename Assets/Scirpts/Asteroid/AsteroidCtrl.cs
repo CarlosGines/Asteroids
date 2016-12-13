@@ -1,16 +1,12 @@
-﻿using UnityEngine;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
-
-using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	/// <summary>
-	/// Controller for an asteroid
-	/// </summary>
-	public interface IAsteroidCtrl
+    /// <summary>
+    /// Controller for an asteroid
+    /// </summary>
+    public interface IAsteroidCtrl
 	{
 		/// <summary>
 		/// Size of the astroid. 0 is the smallest.

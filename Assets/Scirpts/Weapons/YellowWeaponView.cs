@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace CgfGames
 {
-	public class YellowWeaponView : MonoBehaviour, IWeaponView {
+    public class YellowWeaponView : MonoBehaviour, IWeaponView {
 
 		#region Constants
 		//======================================================================

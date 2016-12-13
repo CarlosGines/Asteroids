@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using NSubstitute;
 
 namespace CgfGames
 {
-	[TestFixture]
+    [TestFixture]
 	[Category("Asteroids Tests")]
 	public class GameCtrlTest
 	{

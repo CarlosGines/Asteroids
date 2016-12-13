@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace CgfGames
 {
@@ -112,7 +111,7 @@ namespace CgfGames
 			_ps.Play ();
 			_audio.Stop ();
 			_audio.PlayOneShot (this.explosion);
-			yield return new WaitForSeconds (_ps.duration);
+			yield return new WaitForSeconds (_ps.main.duration);
 			gameObject.SetActive (false);
 		}
 

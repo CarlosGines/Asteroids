@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CgfGames
+﻿namespace CgfGames
 {		
 	public class WeaponCtrl : IWeaponCtrl {
 

@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace CgfGames
+﻿namespace CgfGames
 {		
 	public class AmmoWeaponCtrl : WeaponCtrlWrap {
 

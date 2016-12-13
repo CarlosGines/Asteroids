@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace CgfGames
+﻿namespace CgfGames
 {		
 	public enum WeaponType {BASE, BLUE, YELLOW, RED}
 	

@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using System;
-using System.Collections.Generic;
 
 using Random = UnityEngine.Random;
 
 namespace CgfGames
 {
-	/// <summary>
-	/// View for an asteroid.
-	/// </summary>
-	public interface IAsteroidView
+    /// <summary>
+    /// View for an asteroid.
+    /// </summary>
+    public interface IAsteroidView
 	{
 		/// <summary>
 		/// Occurs when hit by shots.
