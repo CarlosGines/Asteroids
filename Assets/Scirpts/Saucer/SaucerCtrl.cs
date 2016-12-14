@@ -44,7 +44,7 @@ namespace CgfGames
 
 		public int Size { get; private set; }
 
-		public GameState GameState { get; private set; }
+		public IGameStateCtrl GameState { get; private set; }
 		public IShipCtrl Ship { get; private set; }
 
 		#endregion
@@ -60,7 +60,7 @@ namespace CgfGames
 		#region Init
 		//======================================================================
 
-		public SaucerCtrl (GameState gameState, ISaucerView view, 
+		public SaucerCtrl (IGameStateCtrl gameState, ISaucerView view, 
 				IShipCtrl ship, int size)
 		{
 			this.GameState = gameState;

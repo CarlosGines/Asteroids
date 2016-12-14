@@ -131,8 +131,8 @@ namespace CgfGames
 		/// The state of the game.
 		/// </summary>
 		[SerializeField]
-		private GameState _gameState;
-		public GameState GameState {
+		private IGameStateCtrl _gameState;
+		public IGameStateCtrl GameState {
 			get { return _gameState; } private set { _gameState = value; }
 		}
 
@@ -168,7 +168,7 @@ namespace CgfGames
 		/// <param name="view">Associated view.</param>
 		/// <param name="ship">The ship.</param>
 		public GameCtrl (IGameView view, IShipCtrl ship) :
-			this (new GameState (0, INIT_LIVES, 0), view, ship)
+			this (new GameStateCtrl (0, INIT_LIVES, 0), view, ship)
 		{
 		}
 
@@ -179,7 +179,7 @@ namespace CgfGames
 		/// <param name="gameState">Initial game state.</param>
 		/// <param name="view">Associated view.</param>
 		/// <param name="ship">The ship.</param>
-		public GameCtrl (GameState gameState, IGameView view, IShipCtrl ship)
+		public GameCtrl (IGameStateCtrl gameState, IGameView view, IShipCtrl ship)
 		{
 			this.View = view;
 			this.GameState = gameState;

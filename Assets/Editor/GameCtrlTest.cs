@@ -129,7 +129,7 @@ namespace CgfGames
 		{
 			var gameView = Substitute.For<IGameView> ();
 			GameCtrl game = new GameCtrl (
-				new GameState (), gameView, Substitute.For<IShipCtrl> ()
+				new GameStateCtrl (), gameView, Substitute.For<IShipCtrl> ()
 			);
 
 			game.ShipDestroyed ();

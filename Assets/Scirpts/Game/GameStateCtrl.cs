@@ -3,18 +3,47 @@ using System;
 
 namespace CgfGames
 {
+/// <summary>
+	/// Current state of the game.
+	/// </summary>
+	public interface IGameStateCtrl
+	{
+		/// <summary>
+		/// The current player score.
+		/// </summary>
+		int Score {	get; set; }
+
+		/// <summary>
+		/// The current player lives.
+		/// </summary>
+		int Lives {	get; set; }
+
+
+		/// <summary>
+		/// The current level.
+		/// </summary>
+		int Level {	get; set; }
+
+		/// <summary>
+		/// Occurs when score is updated.
+		/// </summary>
+		event Action<int, int> ScoreUpdatedEvent;
+
+		/// <summary>
+		/// Occurs when lives are updated.
+		/// </summary>
+		event Action<int, int> LivesUpdatedEvent;
+	}
+
 	/// <summary>
 	/// Current state of the game.
 	/// </summary>
 	[Serializable]
-	public class GameState
+	public class GameStateCtrl : IGameStateCtrl
 	{
 		#region Public fields & properties
 		//======================================================================
 
-		/// <summary>
-		/// The current player score.
-		/// </summary>
 		[SerializeField]
 		private int _score;
 		public int Score {
@@ -28,9 +57,6 @@ namespace CgfGames
 			}
 		}
 
-		/// <summary>
-		/// The current player lives.
-		/// </summary>
 		[SerializeField]
 		private int _lives;
 		public int Lives {
@@ -44,9 +70,6 @@ namespace CgfGames
 			}
 		}
 
-		/// <summary>
-		/// The current level.
-		/// </summary>
 		[SerializeField]
 		private int _level;
 		public int Level {
@@ -56,29 +79,23 @@ namespace CgfGames
 
 		#endregion
 
-		#region Public fields & properties
+		#region Events
 		//======================================================================
 
-		/// <summary>
-		/// Occurs when score is updated.
-		/// </summary>
 		public event Action<int, int> ScoreUpdatedEvent;
 
-		/// <summary>
-		/// Occurs when lives are updated.
-		/// </summary>
 		public event Action<int, int> LivesUpdatedEvent;
 
 		#endregion
 
-		#region Public fields & properties
+		#region Constructors
 		//======================================================================
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CgfGames.GameState"/>
 		/// class.
 		/// </summary>
-		public GameState ()
+		public GameStateCtrl ()
 		{
 		}
 
@@ -88,7 +105,7 @@ namespace CgfGames
 		/// <param name="score">Initial score.</param>
 		/// <param name="lives">Initial lives.</param>
 		/// <param name="level">Initial level.</param>
-		public GameState (int score, int lives, int level)
+		public GameStateCtrl (int score, int lives, int level)
 		{
 			_score = score;
 			_lives = lives;
